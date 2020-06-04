@@ -1,8 +1,9 @@
 import numpy as np
 import unyt as u
 
-class R32Constants:
-    """Experimental data and other constants for R32"""
+
+class R125Constants:
+    """Experimental data and other constants for R125"""
     def __init__(self):
         assert (
             self.expt_liq_density.keys()
@@ -16,12 +17,16 @@ class R32Constants:
         """Adjustable parameter names"""
 
         param_names = (
-            "sigma_C",
-            "sigma_F",
-            "sigma_H",
-            "epsilon_C",
-            "epsilon_F",
-            "epsilon_H",
+            "sigma_C1",
+            "sigma_C2",
+            "sigma_F1",
+            "sigma_F2",
+            "sigma_H1",
+            "epsilon_C1",
+            "epsilon_C2",
+            "epsilon_F1",
+            "epsilon_F2",
+            "epsilon_H1",
         )
 
         return param_names
@@ -32,8 +37,17 @@ class R32Constants:
 
         bounds_sigma = (
             (
-                np.asarray([[3.0, 4.0], [2.5, 3.5], [1.7, 2.7],]) * u.Angstrom
-            )  # C  # F  # H
+                np.asarray(
+                    [
+                        [3.0, 4.0],  # C
+                        [3.0, 4.0],  # C
+                        [2.5, 3.5],  # F
+                        [2.5, 3.5],  # F
+                        [1.7, 2.7],  # H
+                    ]
+                )
+                * u.Angstrom
+            )
             .in_units(u.nm)
             .value
         )
@@ -41,8 +55,14 @@ class R32Constants:
         bounds_epsilon = (
             (
                 np.asarray(
-                    [[20.0, 60.0], [15.0, 40.0], [2.0, 10.0],]
-                )  # C  # F  # H
+                    [
+                        [20.0, 60.0],  # C
+                        [20.0, 60.0],  # C
+                        [15.0, 40.0],  # F
+                        [15.0, 40.0],  # F
+                        [2.0, 10.0],  # H
+                    ]
+                )
                 * u.K
                 * u.kb
             )
@@ -63,11 +83,11 @@ class R32Constants:
         """
 
         expt_liq_density = {
-            241: 1156.9,
-            261: 1095.2,
-            281: 1027.0,
-            301: 948.31,
-            321: 850.77,
+            229: 1501.1,
+            249: 1425.9,
+            269: 1340.6,
+            289: 1241.1,
+            309: 1118.0,
         }
 
         return expt_liq_density
@@ -81,11 +101,11 @@ class R32Constants:
         """
 
         expt_vap_density = {
-            241: 7.0557,
-            261: 14.818,
-            281: 28.426,
-            301: 51.676,
-            321: 92.786,
+            229: 8.190,
+            249: 18.524,
+            269: 37.291,
+            289: 69.667,
+            309: 126.446,
         }
 
         return expt_vap_density
@@ -99,11 +119,11 @@ class R32Constants:
         """
 
         expt_Pvap = {
-            241: 2.5159,
-            261: 5.4327,
-            281: 10.426,
-            301: 18.295,
-            321: 29.989,
+            229: (123.65 * u.kPa).to_value(u.bar),
+            249: (290.76 * u.kPa).to_value(u.bar),
+            269: (592.27 * u.kPa).to_value(u.bar),
+            289: (1082.84 * u.kPa).to_value(u.bar),
+            309: (1824.93 * u.kPa).to_value(u.bar),
         }
 
         return expt_Pvap
@@ -117,11 +137,11 @@ class R32Constants:
         """
 
         expt_Hvap = {
-            241: (505.47-146.18),
-            261: (512.47-179.37),
-            281: (516.47-214.15),
-            301: (516.09-251.40),
-            321: (508.48-292.95),
+            229: 162.1,
+            249: 149.8,
+            269: 135.6,
+            289: 118.5,
+            309: 96.7,
         }
 
         return expt_Hvap

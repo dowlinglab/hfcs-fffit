@@ -2,7 +2,7 @@ import signac
 import sys
 
 from fffit.signac import save_signac_results
-from utils.r32 import R32
+from utils.r32 import R32Constants
 
 
 def main():
@@ -12,7 +12,7 @@ def main():
     else:
         iternum = sys.argv[1]
 
-    R32 = R32()
+    R32 = R32Constants()
 
     run_path = "/scratch365/rdefever/hfcs-fffit/runs/"
     itername = "r32-density-iter" + str(iternum)

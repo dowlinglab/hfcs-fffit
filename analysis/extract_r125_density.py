@@ -12,7 +12,7 @@ def main():
     else:
         iternum = sys.argv[1]
 
-    R125 = R125()
+    R125 = R125Constants()
 
     run_path = "/scratch365/rdefever/hfcs-fffit/runs/"
     itername = "r125-density-iter" + str(iternum)
