@@ -9,7 +9,7 @@
 #$ -M rdefever@nd.edu
 
 module load gcc/9.1.0
-source /afs/crc.nd.edu/group/maginn/group_members/Ryan_DeFever/software/gromacs-2020/gromacs-dp-q16copt/bin/GMXRC
+source /afs/crc.nd.edu/group/maginn/group_members/Ryan_DeFever/software/gromacs-2020/gromacs-dp/bin/GMXRC
 
 {% block tasks %}
 {% endblock %}

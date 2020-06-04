@@ -2,7 +2,7 @@ import signac
 import sys
 
 from fffit.signac import save_signac_results
-from utils.r32 import param_names
+from utils.r32 import R32
 
 
 def main():
@@ -12,6 +12,8 @@ def main():
     else:
         internum = sys.argv[1]
 
+    R32 = R32()
+
     run_path = "/scratch365/rdefever/hfcs-fffit/runs/"
     itername = "r32-density-iter1"
     project_path = run_path + itername
@@ -20,7 +22,7 @@ def main():
     property_names = ["density"]
     project = signac.get_project(project_path)
 
-    save_signac_results(project, param_names(), property_names, csv_name)
+    save_signac_results(project, R32.param_names, property_names, csv_name)
 
 
 if __name__ == "__main__":
