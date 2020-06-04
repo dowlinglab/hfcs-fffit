@@ -1,7 +1,7 @@
 import numpy as np
 import unyt as u
 
-class r32:
+class R32:
 
     @property
     def param_names(self):
