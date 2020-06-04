@@ -2,7 +2,7 @@ import signac
 import sys
 
 from fffit.signac import save_signac_results
-from utils.r125 import R125
+from utils.r125 import R125Constants
 
 
 def main():
@@ -17,7 +17,7 @@ def main():
     run_path = "/scratch365/rdefever/hfcs-fffit/runs/"
     itername = "r125-density-iter" + str(iternum)
     project_path = run_path + itername
-    csv_name = "csv/" + itername + ".csv"
+    csv_name = "csv/" + itername + "-results.csv"
 
     property_names = ["density"]
     project = signac.get_project(project_path)
