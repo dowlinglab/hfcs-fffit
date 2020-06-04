@@ -12,6 +12,11 @@ class R32Constants:
         )
 
     @property
+    def n_params(self):
+        """Number of adjustable parameters"""
+        return len(self.param_names)
+
+    @property
     def param_names(self):
         """Adjustable parameter names"""
 
