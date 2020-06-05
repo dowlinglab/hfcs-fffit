@@ -33,6 +33,15 @@ def prepare_df_density(df_csv, molecule, liquid_density_threshold):
     df_vapor : pd.DataFrame
         `df_all` where `is_liquid` is False
     """
+    if "density" not in df_csv.columns:
+        raise ValueError("df_csv must contain column 'density'")
+    if "temperature" not in df_csv.columns:
+        raise ValueError("df_csv must contain column 'temperature'")
+    for param in list(molecule.param_names):
+        if param not in df_csv.columns:
+            raise ValueError(
+                f"df_csv must contain a column for parameter: '{param}'"
+            )
 
     # Add expt density and is_liquid
     df_all = df_csv.rename(columns={"density": "md_density"})
