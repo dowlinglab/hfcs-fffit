@@ -14,7 +14,7 @@ def main():
 
     R125 = R125Constants()
 
-    run_path = "/scratch365/rdefever/hfcs-fffit/runs/"
+    run_path = "/scratch365/rdefever/hfcs-fffit/hfcs-fffit/runs/"
     itername = "r125-density-iter" + str(iternum)
     project_path = run_path + itername
     csv_name = "csv/" + itername + "-results.csv"
