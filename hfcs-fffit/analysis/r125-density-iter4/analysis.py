@@ -36,10 +36,10 @@ from fffit.models import run_gpflow_scipy
 
 sys.path.append('../')
 
-from utils.r32 import R32Constants
+from utils.r125 import R125Constants
 from utils.id_new_samples import prepare_df_density
 
-R32 = R32Constants()
+R125 = R125Constants()
 
 liquid_density_threshold = 500 # kg/m^3
 
@@ -49,8 +49,8 @@ csv_path = "/scratch365/rdefever/hfcs-fffit/hfcs-fffit/analysis/csv/"
 
 
 # Load in all parameter csvs and result csvs
-param_csv_names = ["r32-density-iter" + str(i) + "-params.csv" for i in range(1, iternum+1)]
-result_csv_names = ["r32-density-iter" + str(i) + "-results.csv" for i in range(1, iternum+1)]
+param_csv_names = ["r125-density-iter" + str(i) + "-params.csv" for i in range(1, iternum+1)]
+result_csv_names = ["r125-density-iter" + str(i) + "-results.csv" for i in range(1, iternum+1)]
 df_params = [pd.read_csv(csv_path + param_csv_name, index_col=0) for param_csv_name in param_csv_names]
 df_results = [pd.read_csv(csv_path + result_csv_name, index_col=0) for result_csv_name in result_csv_names]
 
@@ -61,14 +61,14 @@ for iter_ in range(1,iternum+1):
     df_param = df_params[iter_ - 1]
     df_result = df_results[iter_ - 1]
 
-    df_result["expt_density"] = df_result["temperature"].apply(lambda x: R32.expt_liq_density[int(x)])
+    df_result["expt_density"] = df_result["temperature"].apply(lambda x: R125.expt_liq_density[int(x)])
     df_result["sq_err"] = (df_result["density"] - df_result["expt_density"])**2
-    df_mse = df_result.groupby(list(R32.param_names))["sq_err"].mean().reset_index(name="mse")
+    df_mse = df_result.groupby(list(R125.param_names))["sq_err"].mean().reset_index(name="mse")
 
-    scaled_param_values = values_real_to_scaled(df_mse[list(R32.param_names)], R32.param_bounds)
+    scaled_param_values = values_real_to_scaled(df_mse[list(R125.param_names)], R125.param_bounds)
     param_idxs = []
     for params1 in scaled_param_values:
-        for idx, params2 in enumerate(df_param[list(R32.param_names)].values):
+        for idx, params2 in enumerate(df_param[list(R125.param_names)].values):
             if np.allclose(params1, params2):
                 param_idxs.append(idx)
                 break
@@ -87,7 +87,7 @@ plt.xlabel("Sorted Index")
 plt.ylabel("MSE (kg$^2$/m$^6$)")
 plt.legend()
 plt.tight_layout()
-plt.savefig("R32-density-MSE-sorted-all.pdf")
+plt.savefig("R125-density-MSE-sorted-all.pdf")
 plt.close()
 
 # Plot results according to parameter set idx
@@ -116,7 +116,7 @@ for i, df_mse in enumerate(df_mses):
     parent_ax.set_ylim(0,1100000)
     parent_ax.legend(loc="upper left")
 
-    fig.savefig(f"R32-density-MSE-unsorted-round-{i+1}.pdf")
+    fig.savefig(f"R125-density-MSE-unsorted-round-{i+1}.pdf")
     plt.close()
 
 # Plot results according to parameter set idx
@@ -132,7 +132,7 @@ for i, df_mse in enumerate(df_mses):
     plt.ylim(0,1100000)
     plt.legend()
     plt.tight_layout()
-    plt.savefig(f"R32-density-MSE-unsorted-round-{i+1}.pdf")
+    plt.savefig(f"R125-density-MSE-unsorted-round-{i+1}.pdf")
     plt.close()
 
 # Plot results sorted by MSE
@@ -154,7 +154,7 @@ plt.xlabel("Sorted Index")
 plt.ylabel("MSE (kg$^2$/m$^6$)")
 plt.legend()
 plt.tight_layout()
-plt.savefig("R32-density-MSE-sorted.pdf")
+plt.savefig("R125-density-MSE-sorted.pdf")
 plt.close()
 
 # Zoom in more
@@ -176,5 +176,5 @@ plt.ylabel("MSE (kg$^2$/m$^6$)")
 plt.ylim(-200,1000)
 plt.legend()
 plt.tight_layout()
-plt.savefig("R32-density-MSE-sorted-inset.pdf")
+plt.savefig("R125-density-MSE-sorted-inset.pdf")
 plt.close()
