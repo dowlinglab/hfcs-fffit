@@ -19,3 +19,4 @@ r125-iter1-density/data/initial-config/system_em.tpr
 r125-iter1-density/data/initial-config/system_em.trr
 
 *.ipynb_checkpoints
+*.egg-info*
