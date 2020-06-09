@@ -166,4 +166,5 @@ g.set(xlim=(-0.1, 1.1), ylim=(-0.1, 1.1))
 g.savefig("R32-greedy-MSE.lt.100.pdf")
 
 final_param_set_mse100.drop(columns=["mse"], inplace=True)
+final_param_set_mse100.drop(columns=["param_idx"], inplace=True)
 final_param_set_mse100.to_csv(csv_path + "r32-vle-iter1-params.csv")
