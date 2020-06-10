@@ -48,7 +48,7 @@ def calc_liqboxl(job):
 
     nmols_liq = job.sp.N_liq
     liq_density = job.sp.expt_liq_density * u.Unit("kg/m**3")
-    molweight = 52.02 * u.amu
+    molweight = 120.02 * u.amu
     mol_density = liq_density / molweight
     vol_liq = nmols_liq / mol_density
     boxl = vol_liq ** (1.0 / 3.0)
