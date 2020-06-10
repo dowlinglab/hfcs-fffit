@@ -31,8 +31,8 @@ def init_project():
         309: (1824.93 * u.kPa),
     }
 
-    n_vap = 200
-    n_liq = 800
+    n_vap = 160
+    n_liq = 640
 
     # Experimental density
     R125 = R125Constants()
