@@ -12,6 +12,20 @@ class R32Constants:
         )
 
     @property
+    def molecular_weight(self):
+        """Molecular weight of the molecule in g/mol"""
+        return 52.024
+
+    @property
+    def expt_Tc(self):
+        """Critical temperature in K"""
+        return 351.35
+
+    def expt_rhoc(self):
+        """Critical density in kg/m^3"""
+        return 429.756
+
+    @property
     def n_params(self):
         """Number of adjustable parameters"""
         return len(self.param_names)
