@@ -162,8 +162,8 @@ class R32Constants:
     def Pvap_bounds(self):
         """Bounds on vapor pressure in units of bar"""
 
-        lower_bound = np.min(list(self.expt_Pvap_density.values()))
-        upper_bound = np.max(list(self.expt_Pvap_density.values()))
+        lower_bound = np.min(list(self.expt_Pvap.values()))
+        upper_bound = np.max(list(self.expt_Pvap.values()))
         bounds = np.asarray([lower_bound, upper_bound], dtype=np.float32)
         return bounds
 
@@ -171,7 +171,7 @@ class R32Constants:
     def Hvap_bounds(self):
         """Bounds on enthaply of vaporization in units of kJ/kg"""
 
-        lower_bound = np.min(list(self.expt_Hvap_density.values()))
-        upper_bound = np.max(list(self.expt_Hvap_density.values()))
+        lower_bound = np.min(list(self.expt_Hvap.values()))
+        upper_bound = np.max(list(self.expt_Hvap.values()))
         bounds = np.asarray([lower_bound, upper_bound], dtype=np.float32)
         return bounds
