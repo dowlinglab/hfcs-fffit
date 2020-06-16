@@ -21,6 +21,7 @@ class R32Constants:
         """Critical temperature in K"""
         return 351.35
 
+    @property
     def expt_rhoc(self):
         """Critical density in kg/m^3"""
         return 429.756

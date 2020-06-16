@@ -76,6 +76,123 @@ def prepare_df_density(df_csv, molecule, liquid_density_threshold):
 
     return df_all, df_liquid, df_vapor
 
+def prepare_df_vle(df_csv, molecule):
+    """Prepare a pandas dataframe for fitting a GP model to density data
+
+    Performs the following actions:
+       - Renames "liq_density" to "md_liq_density"
+       - Renames "vap_density" to "md_vap_density"
+       - Renames "Pvap" to "md_Pvap"
+       - Removes "liq_enthalpy" and "vap_enthalpy" and adds "md_Hvap"
+       - Adds "expt_liq_density"
+       - Adds "expt_vap_density"
+       - Adds "expt_Pvap"
+       - Adds "expt_Hvap"
+       - Adds "is_liquid"
+       - Converts all values from physical values to scaled values
+
+    Parameters
+    ----------
+    df_csv : pd.DataFrame
+        The dataframe as loaded from a CSV file with the signac results
+    molecule : R32Constants, R125Constants
+        An instance of a molecule constants class
+    n_molecules : int
+        The number of molecules in the simulation
+
+    Returns
+    -------
+    df_all : pd.DataFrame
+        The dataframe with scaled parameters and MD/expt. properties
+    """
+    if "liq_density" not in df_csv.columns:
+        raise ValueError("df_csv must contain column 'liq_density'")
+    if "vap_density" not in df_csv.columns:
+        raise ValueError("df_csv must contain column 'vap_density'")
+    if "Pvap" not in df_csv.columns:
+        raise ValueError("df_csv must contain column 'Pvap'")
+    if "Hvap" not in df_csv.columns:
+        raise ValueError("df_csv must contain column 'Hvap'")
+    if "liq_enthalpy" not in df_csv.columns:
+        raise ValueError("df_csv must contain column 'liq_enthalpy'")
+    if "vap_enthalpy" not in df_csv.columns:
+        raise ValueError("df_csv must contain column 'vap_enthalpy'")
+    if "temperature" not in df_csv.columns:
+        raise ValueError("df_csv must contain column 'temperature'")
+    for param in list(molecule.param_names):
+        if param not in df_csv.columns:
+            raise ValueError(
+                f"df_csv must contain a column for parameter: '{param}'"
+            )
+
+    # Rename properties to MD, calculate Hvap, add expt properties
+    df_all = df_csv.rename(columns={"liq_density": "md_liq_density"})
+    df_all = df_all.rename(columns={"vap_density": "md_vap_density"})
+    df_all = df_all.rename(columns={"Pvap": "md_Pvap"})
+    df_all = df_all.rename(columns={"Hvap": "md_Hvap"})
+    df_all.drop(columns="vap_enthalpy", inplace=True)
+    df_all.drop(columns="liq_enthalpy", inplace=True)
+
+    # Convert Hvap to kJ/kg
+    df_all["md_Hvap"] = df_all["md_Hvap"] / molecule.molecular_weight * 1000.0
+
+    df_all["expt_liq_density"] = df_all["temperature"].apply(
+        lambda temp: molecule.expt_liq_density[int(temp)]
+    )
+    df_all["expt_vap_density"] = df_all["temperature"].apply(
+        lambda temp: molecule.expt_vap_density[int(temp)]
+    )
+    df_all["expt_Pvap"] = df_all["temperature"].apply(
+        lambda temp: molecule.expt_Pvap[int(temp)]
+    )
+    df_all["expt_Hvap"] = df_all["temperature"].apply(
+        lambda temp: molecule.expt_Hvap[int(temp)]
+    )
+
+    # Scale all values
+    scaled_param_values = values_real_to_scaled(
+        df_all[list(molecule.param_names)], molecule.param_bounds
+    )
+    scaled_temperature = values_real_to_scaled(
+        df_all["temperature"], molecule.temperature_bounds
+    )
+    scaled_md_liq_density = values_real_to_scaled(
+        df_all["md_liq_density"], molecule.liq_density_bounds
+    )
+    scaled_md_vap_density = values_real_to_scaled(
+        df_all["md_vap_density"], molecule.vap_density_bounds
+    )
+    scaled_md_Pvap = values_real_to_scaled(
+        df_all["md_Pvap"], molecule.Pvap_bounds
+    )
+    scaled_md_Hvap = values_real_to_scaled(
+        df_all["md_Hvap"], molecule.Hvap_bounds
+    )
+    scaled_expt_liq_density = values_real_to_scaled(
+        df_all["expt_liq_density"], molecule.liq_density_bounds
+    )
+    scaled_expt_vap_density = values_real_to_scaled(
+        df_all["expt_vap_density"], molecule.vap_density_bounds
+    )
+    scaled_expt_Pvap = values_real_to_scaled(
+        df_all["expt_Pvap"], molecule.Pvap_bounds
+    )
+    scaled_expt_Hvap = values_real_to_scaled(
+        df_all["expt_Hvap"], molecule.Hvap_bounds
+    )
+    df_all[list(molecule.param_names)] = scaled_param_values
+    df_all["temperature"] = scaled_temperature
+    df_all["md_liq_density"] = scaled_md_liq_density
+    df_all["md_vap_density"] = scaled_md_vap_density
+    df_all["md_Pvap"] = scaled_md_Pvap
+    df_all["md_Hvap"] = scaled_md_Hvap
+    df_all["expt_liq_density"] = scaled_expt_liq_density
+    df_all["expt_vap_density"] = scaled_expt_vap_density
+    df_all["expt_Pvap"] = scaled_expt_Pvap
+    df_all["expt_Hvap"] = scaled_expt_Hvap
+
+    return df_all
+
 
 def rank_hypercube_samples(latin_hypercube, classifier, gp_model, molecule):
     """Evalulate the GP model for a latin hypercube and return ranked results
