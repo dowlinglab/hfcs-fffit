@@ -33,98 +33,98 @@ def prepare_df_vle_errors(df, molecule):
         )
 
         # Liquid density
-        md_liq_density = values_scaled_to_real(
-            values["md_liq_density"], molecule.liq_density_bounds
+        sim_liq_density = values_scaled_to_real(
+            values["sim_liq_density"], molecule.liq_density_bounds
         )
         expt_liq_density = values_scaled_to_real(
             values["expt_liq_density"], molecule.liq_density_bounds
         )
-        mse_liq_density = np.mean((md_liq_density - expt_liq_density) ** 2)
+        mse_liq_density = np.mean((sim_liq_density - expt_liq_density) ** 2)
         mape_liq_density = (
             np.mean(
-                np.abs((md_liq_density - expt_liq_density) / expt_liq_density)
+                np.abs((sim_liq_density - expt_liq_density) / expt_liq_density)
             )
             * 100.0
         )
         properties = {
-            f"md_liq_density_{float(temp):.0f}K": float(liq_density)
-            for temp, liq_density in zip(temps, md_liq_density)
+            f"sim_liq_density_{float(temp):.0f}K": float(liq_density)
+            for temp, liq_density in zip(temps, sim_liq_density)
         }
         # Vapor density
-        md_vap_density = values_scaled_to_real(
-            values["md_vap_density"], molecule.vap_density_bounds
+        sim_vap_density = values_scaled_to_real(
+            values["sim_vap_density"], molecule.vap_density_bounds
         )
         expt_vap_density = values_scaled_to_real(
             values["expt_vap_density"], molecule.vap_density_bounds
         )
-        mse_vap_density = np.mean((md_vap_density - expt_vap_density) ** 2)
+        mse_vap_density = np.mean((sim_vap_density - expt_vap_density) ** 2)
         mape_vap_density = (
             np.mean(
-                np.abs((md_vap_density - expt_vap_density) / expt_vap_density)
+                np.abs((sim_vap_density - expt_vap_density) / expt_vap_density)
             )
             * 100.0
         )
         properties.update(
             {
-                f"md_vap_density_{float(temp):.0f}K": float(vap_density)
-                for temp, vap_density in zip(temps, md_vap_density)
+                f"sim_vap_density_{float(temp):.0f}K": float(vap_density)
+                for temp, vap_density in zip(temps, sim_vap_density)
             }
         )
 
         # Vapor pressure
-        md_Pvap = values_scaled_to_real(
-            values["md_Pvap"], molecule.Pvap_bounds
+        sim_Pvap = values_scaled_to_real(
+            values["sim_Pvap"], molecule.Pvap_bounds
         )
         expt_Pvap = values_scaled_to_real(
             values["expt_Pvap"], molecule.Pvap_bounds
         )
-        mse_Pvap = np.mean((md_Pvap - expt_Pvap) ** 2)
-        mape_Pvap = np.mean(np.abs((md_Pvap - expt_Pvap) / expt_Pvap)) * 100.0
+        mse_Pvap = np.mean((sim_Pvap - expt_Pvap) ** 2)
+        mape_Pvap = np.mean(np.abs((sim_Pvap - expt_Pvap) / expt_Pvap)) * 100.0
         properties.update(
             {
-                f"md_Pvap_{float(temp):.0f}K": float(Pvap)
-                for temp, Pvap in zip(temps, md_Pvap)
+                f"sim_Pvap_{float(temp):.0f}K": float(Pvap)
+                for temp, Pvap in zip(temps, sim_Pvap)
             }
         )
 
         # Enthalpy of vaporization
-        md_Hvap = values_scaled_to_real(
-            values["md_Hvap"], molecule.Hvap_bounds
+        sim_Hvap = values_scaled_to_real(
+            values["sim_Hvap"], molecule.Hvap_bounds
         )
         expt_Hvap = values_scaled_to_real(
             values["expt_Hvap"], molecule.Hvap_bounds
         )
-        mse_Hvap = np.mean((md_Hvap - expt_Hvap) ** 2)
-        mape_Hvap = np.mean(np.abs((md_Hvap - expt_Hvap) / expt_Hvap)) * 100.0
+        mse_Hvap = np.mean((sim_Hvap - expt_Hvap) ** 2)
+        mape_Hvap = np.mean(np.abs((sim_Hvap - expt_Hvap) / expt_Hvap)) * 100.0
         properties.update(
             {
-                f"md_Hvap_{float(temp):.0f}K": float(Hvap)
-                for temp, Hvap in zip(temps, md_Hvap)
+                f"sim_Hvap_{float(temp):.0f}K": float(Hvap)
+                for temp, Hvap in zip(temps, sim_Hvap)
             }
         )
 
         # Critical Point (Law of rectilinear diameters)
         slope1, intercept1, r_value1, p_value1, std_err1 = linregress(
             temps.flatten(),
-            ((md_liq_density + md_vap_density) / 2.0).flatten(),
+            ((sim_liq_density + sim_vap_density) / 2.0).flatten(),
         )
 
         slope2, intercept2, r_value2, p_value2, std_err2 = linregress(
             temps.flatten(),
-            ((md_liq_density - md_vap_density) ** (1 / 0.32)).flatten(),
+            ((sim_liq_density - sim_vap_density) ** (1 / 0.32)).flatten(),
         )
 
         Tc = np.abs(intercept2 / slope2)
         mse_Tc = (Tc - molecule.expt_Tc) ** 2
         mape_Tc = np.abs((Tc - molecule.expt_Tc) / molecule.expt_Tc) * 100.0
-        properties.update({"md_Tc": Tc})
+        properties.update({"sim_Tc": Tc})
 
         rhoc = intercept1 + slope1 * Tc
         mse_rhoc = (rhoc - molecule.expt_rhoc) ** 2
         mape_rhoc = (
             np.abs((rhoc - molecule.expt_rhoc) / molecule.expt_rhoc) * 100.0
         )
-        properties.update({"md_rhoc": rhoc})
+        properties.update({"sim_rhoc": rhoc})
 
         new_quantities = {
             **properties,

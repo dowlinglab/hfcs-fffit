@@ -199,8 +199,8 @@ def main():
             alpha=0.5,
         )
     ax.scatter(
-        df_paramsets.filter(regex=("md_rhoc")),
-        df_paramsets.filter(regex=("md_Tc")),
+        df_paramsets.filter(regex=("sim_rhoc")),
+        df_paramsets.filter(regex=("sim_Tc")),
         c=rgb_cycle,
         s=60,
         alpha=0.5,

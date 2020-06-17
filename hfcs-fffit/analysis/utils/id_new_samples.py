@@ -80,10 +80,10 @@ def prepare_df_vle(df_csv, molecule):
     """Prepare a pandas dataframe for fitting a GP model to density data
 
     Performs the following actions:
-       - Renames "liq_density" to "md_liq_density"
-       - Renames "vap_density" to "md_vap_density"
-       - Renames "Pvap" to "md_Pvap"
-       - Removes "liq_enthalpy" and "vap_enthalpy" and adds "md_Hvap"
+       - Renames "liq_density" to "sim_liq_density"
+       - Renames "vap_density" to "sim_vap_density"
+       - Renames "Pvap" to "sim_Pvap"
+       - Removes "liq_enthalpy" and "vap_enthalpy" and adds "sim_Hvap"
        - Adds "expt_liq_density"
        - Adds "expt_vap_density"
        - Adds "expt_Pvap"
@@ -126,15 +126,15 @@ def prepare_df_vle(df_csv, molecule):
             )
 
     # Rename properties to MD, calculate Hvap, add expt properties
-    df_all = df_csv.rename(columns={"liq_density": "md_liq_density"})
-    df_all = df_all.rename(columns={"vap_density": "md_vap_density"})
-    df_all = df_all.rename(columns={"Pvap": "md_Pvap"})
-    df_all = df_all.rename(columns={"Hvap": "md_Hvap"})
+    df_all = df_csv.rename(columns={"liq_density": "sim_liq_density"})
+    df_all = df_all.rename(columns={"vap_density": "sim_vap_density"})
+    df_all = df_all.rename(columns={"Pvap": "sim_Pvap"})
+    df_all = df_all.rename(columns={"Hvap": "sim_Hvap"})
     df_all.drop(columns="vap_enthalpy", inplace=True)
     df_all.drop(columns="liq_enthalpy", inplace=True)
 
     # Convert Hvap to kJ/kg
-    df_all["md_Hvap"] = df_all["md_Hvap"] / molecule.molecular_weight * 1000.0
+    df_all["sim_Hvap"] = df_all["sim_Hvap"] / molecule.molecular_weight * 1000.0
 
     df_all["expt_liq_density"] = df_all["temperature"].apply(
         lambda temp: molecule.expt_liq_density[int(temp)]
@@ -156,17 +156,17 @@ def prepare_df_vle(df_csv, molecule):
     scaled_temperature = values_real_to_scaled(
         df_all["temperature"], molecule.temperature_bounds
     )
-    scaled_md_liq_density = values_real_to_scaled(
-        df_all["md_liq_density"], molecule.liq_density_bounds
+    scaled_sim_liq_density = values_real_to_scaled(
+        df_all["sim_liq_density"], molecule.liq_density_bounds
     )
-    scaled_md_vap_density = values_real_to_scaled(
-        df_all["md_vap_density"], molecule.vap_density_bounds
+    scaled_sim_vap_density = values_real_to_scaled(
+        df_all["sim_vap_density"], molecule.vap_density_bounds
     )
-    scaled_md_Pvap = values_real_to_scaled(
-        df_all["md_Pvap"], molecule.Pvap_bounds
+    scaled_sim_Pvap = values_real_to_scaled(
+        df_all["sim_Pvap"], molecule.Pvap_bounds
     )
-    scaled_md_Hvap = values_real_to_scaled(
-        df_all["md_Hvap"], molecule.Hvap_bounds
+    scaled_sim_Hvap = values_real_to_scaled(
+        df_all["sim_Hvap"], molecule.Hvap_bounds
     )
     scaled_expt_liq_density = values_real_to_scaled(
         df_all["expt_liq_density"], molecule.liq_density_bounds
@@ -182,10 +182,10 @@ def prepare_df_vle(df_csv, molecule):
     )
     df_all[list(molecule.param_names)] = scaled_param_values
     df_all["temperature"] = scaled_temperature
-    df_all["md_liq_density"] = scaled_md_liq_density
-    df_all["md_vap_density"] = scaled_md_vap_density
-    df_all["md_Pvap"] = scaled_md_Pvap
-    df_all["md_Hvap"] = scaled_md_Hvap
+    df_all["sim_liq_density"] = scaled_sim_liq_density
+    df_all["sim_vap_density"] = scaled_sim_vap_density
+    df_all["sim_Pvap"] = scaled_sim_Pvap
+    df_all["sim_Hvap"] = scaled_sim_Hvap
     df_all["expt_liq_density"] = scaled_expt_liq_density
     df_all["expt_vap_density"] = scaled_expt_vap_density
     df_all["expt_Pvap"] = scaled_expt_Pvap
