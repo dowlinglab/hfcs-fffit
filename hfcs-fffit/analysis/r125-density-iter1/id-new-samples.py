@@ -26,7 +26,11 @@ from fffit.models import run_gpflow_scipy
 sys.path.append("../")
 
 from utils.r125 import R125Constants
-from utils.id_new_samples import prepare_df_density, rank_hypercube_samples
+from utils.id_new_samples import (
+    prepare_df_density,
+    classify_samples,
+    rank_samples,
+)
 
 R125 = R125Constants()
 
@@ -86,10 +90,12 @@ model = run_gpflow_scipy(
 
 ### Step 3: Find new parameters for MD simulations
 
+# SVM to classify hypercube regions as liquid or vapor
 latin_hypercube = np.loadtxt("LHS_5e5x10.csv", delimiter=",")
-ranked_liquid_samples, ranked_vapor_samples = rank_hypercube_samples(
-    latin_hypercube, classifier, model, R125
-)
+liquid_samples, vapor_samples = classify_samples(latin_hypercube, classifier)
+# Find the lowest MSE points from the GP in both sets
+ranked_liquid_samples = rank_samples(liquid_samples, model, R125, "liq_density")
+ranked_vapor_samples = rank_samples(vapor_samples, model, R125, "liq_density")
 
 # Make a set of the lowest MSE parameter sets
 top_liquid_samples = ranked_liquid_samples[

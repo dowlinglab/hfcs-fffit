@@ -26,7 +26,11 @@ from fffit.models import run_gpflow_scipy
 sys.path.append("../")
 
 from utils.r32 import R32Constants
-from utils.id_new_samples import prepare_df_density, rank_hypercube_samples
+from utils.id_new_samples import (
+    prepare_df_density,
+    classify_samples,
+    rank_samples,
+)
 
 R32 = R32Constants()
 
@@ -43,11 +47,16 @@ gp_shuffle_seed = 5928483
 liquid_density_threshold = 500  # kg/m^3
 
 csv_path = "/scratch365/rdefever/hfcs-fffit/hfcs-fffit/analysis/csv/"
-in_csv_names = ["r32-density-iter" + str(i) + "-results.csv" for i in range(1, iternum+1)]
+in_csv_names = [
+    "r32-density-iter" + str(i) + "-results.csv" for i in range(1, iternum + 1)
+]
 out_csv_name = "r32-density-iter" + str(iternum + 1) + "-params.csv"
 
 # Read files
-df_csvs = [pd.read_csv(csv_path + in_csv_name, index_col=0) for in_csv_name in in_csv_names]
+df_csvs = [
+    pd.read_csv(csv_path + in_csv_name, index_col=0)
+    for in_csv_name in in_csv_names
+]
 df_csv = pd.concat(df_csvs)
 df_all, df_liquid, df_vapor = prepare_df_density(
     df_csv, R32, liquid_density_threshold
@@ -87,10 +96,12 @@ model = run_gpflow_scipy(
 
 ### Step 3: Find new parameters for MD simulations
 
+# SVM to classify hypercube regions as liquid or vapor
 latin_hypercube = np.loadtxt("LHS_1e6x6.csv", delimiter=",")
-ranked_liquid_samples, ranked_vapor_samples = rank_hypercube_samples(
-    latin_hypercube, classifier, model, R32
-)
+liquid_samples, vapor_samples = classify_samples(latin_hypercube, classifier)
+# Find the lowest MSE points from the GP in both sets
+ranked_liquid_samples = rank_samples(liquid_samples, model, R32, "liq_density")
+ranked_vapor_samples = rank_samples(vapor_samples, model, R32, "liq_density")
 
 # Make a set of the lowest MSE parameter sets
 top_liquid_samples = ranked_liquid_samples[
