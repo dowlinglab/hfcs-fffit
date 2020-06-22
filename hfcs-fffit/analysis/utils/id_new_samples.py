@@ -233,7 +233,7 @@ def classify_samples(samples, classifier):
     return liquid_samples, vapor_samples
 
 
-def rank_samples(samples, gp_model, molecule, property_name):
+def rank_samples(samples, gp_model, molecule, property_name, property_offset=0.0):
     """Evalulate the GP model for a samples and return ranked results
     from lowest to highest MSE with experiment across the temperature range
 
@@ -248,6 +248,9 @@ def rank_samples(samples, gp_model, molecule, property_name):
     property_name : string
         The name of the property of interest. Valid options are
         "liq_density", "vap_density", "Pvap", "Hvap"
+    property_offset : float
+        Adjust the value predicted by the gp model by this amount.
+        Quantity specified in physical units
 
     Returns
     -------
@@ -256,36 +259,36 @@ def rank_samples(samples, gp_model, molecule, property_name):
     """
 
     valid_property_names = [
-        "liq_density",
-        "vap_density",
-        "Pvap",
-        "Hvap",
+        "sim_liq_density",
+        "sim_vap_density",
+        "sim_Pvap",
+        "sim_Hvap",
     ]
 
     if property_name not in valid_property_names:
         raise ValueError(
-            "Invalid property_name. Supported property_names are "
-            "{}".format(valid_property_names)
+            "Invalid property_name {}. Supported property_names are "
+            "{}".format(property_name, valid_property_names)
         )
 
     temperature_bounds = molecule.temperature_bounds
-    if property_name == "liq_density":
+    if property_name == "sim_liq_density":
         expt_property = molecule.expt_liq_density
         property_bounds = molecule.liq_density_bounds
-    elif property_name == "vap_density":
+    elif property_name == "sim_vap_density":
         expt_property = molecule.expt_vap_density
         property_bounds = molecule.vap_density_bounds
-    elif property_name == "Pvap":
+    elif property_name == "sim_Pvap":
         expt_property = molecule.expt_Pvap
         property_bounds = molecule.Pvap_bounds
-    elif property_name == "Hvap":
+    elif property_name == "sim_Hvap":
         expt_property = molecule.expt_Hvap
         property_bounds = molecule.Hvap_bounds
 
     # Apply GP model and calculate mean squared errors (MSE) between
     # GP model predictions and experimental data for all parameter samples
     mse = _calc_gp_mse(
-        gp_model, samples, expt_property, property_bounds, temperature_bounds
+        gp_model, samples, expt_property, property_bounds, temperature_bounds, property_offset
     )
     # Make pandas dataframes, rank, and return
     samples_mse = np.hstack((samples, mse.reshape(-1, 1)))
@@ -298,7 +301,7 @@ def rank_samples(samples, gp_model, molecule, property_name):
 
 
 def _calc_gp_mse(
-    gp_model, samples, expt_property, property_bounds, temperature_bounds
+    gp_model, samples, expt_property, property_bounds, temperature_bounds, property_offset=0.0
 ):
     """Calculate the MSE between the GP model and experiment for samples"""
 
@@ -309,6 +312,7 @@ def _calc_gp_mse(
         xx = np.hstack((samples, np.tile(scaled_temp, (samples.shape[0], 1))))
         means_scaled, vars_scaled = gp_model.predict_f(xx)
         means = values_scaled_to_real(means_scaled, property_bounds)
+        means = means + property_offset
         err = means - density
         all_errs[:, col_idx] = err[:, 0]
         col_idx += 1

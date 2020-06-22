@@ -94,8 +94,8 @@ model = run_gpflow_scipy(
 latin_hypercube = np.loadtxt("LHS_1e6x6.csv", delimiter=",")
 liquid_samples, vapor_samples = classify_samples(latin_hypercube, classifier)
 # Find the lowest MSE points from the GP in both sets
-ranked_liquid_samples = rank_samples(liquid_samples, model, R32, "liq_density")
-ranked_vapor_samples = rank_samples(vapor_samples, model, R32, "liq_density")
+ranked_liquid_samples = rank_samples(liquid_samples, model, R32, "sim_liq_density")
+ranked_vapor_samples = rank_samples(vapor_samples, model, R32, "sim_liq_density")
 
 # Make a set of the lowest MSE parameter sets
 top_liquid_samples = ranked_liquid_samples[
