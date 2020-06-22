@@ -1,7 +1,6 @@
 import numpy as np
 import unyt as u
 
-
 class R125Constants:
     """Experimental data and other constants for R125"""
     def __init__(self):
@@ -11,6 +10,21 @@ class R125Constants:
             == self.expt_Pvap.keys()
             == self.expt_Hvap.keys()
         )
+
+    @property
+    def molecular_weight(self):
+        """Molecular weight of the molecule in g/mol"""
+        return 120.02
+
+    @property
+    def expt_Tc(self):
+        """Critical temperature in K"""
+        return 339.4
+
+    @property
+    def expt_rhoc(self):
+        """Critical density in kg/m^3"""
+        return 571.9
 
     @property
     def n_params(self):
