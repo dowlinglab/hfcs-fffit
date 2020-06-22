@@ -170,7 +170,7 @@ def extract_final_liqbox(job):
 
     import subprocess
 
-    n_atoms = job.sp.N_liq * 5
+    n_atoms = job.sp.N_liq * 8
     cmd = [
         "tail",
         "-n",
@@ -335,6 +335,7 @@ def run_gemc(job):
 @Project.post(lambda job: "liq_density" in job.doc)
 @Project.post(lambda job: "vap_density" in job.doc)
 @Project.post(lambda job: "Pvap" in job.doc)
+@Project.post(lambda job: "Hvap" in job.doc)
 @Project.post(lambda job: "liq_enthalpy" in job.doc)
 @Project.post(lambda job: "vap_enthalpy" in job.doc)
 @Project.post(lambda job: "nmols_liq" in job.doc)
@@ -342,12 +343,12 @@ def run_gemc(job):
 @Project.post(lambda job: "liq_density_unc" in job.doc)
 @Project.post(lambda job: "vap_density_unc" in job.doc)
 @Project.post(lambda job: "Pvap_unc" in job.doc)
+@Project.post(lambda job: "Hvap_unc" in job.doc)
 @Project.post(lambda job: "liq_enthalpy_unc" in job.doc)
 @Project.post(lambda job: "vap_enthalpy_unc" in job.doc)
 def calculate_props(job):
     """Calculate the density"""
 
-    import panedr
     import numpy as np
     from block_average import block_average
 
@@ -381,10 +382,15 @@ def calculate_props(job):
     nmols_vap = df_box2[:, n_mols_col - 1]
     nmols_vap_ave = np.mean(nmols_vap)
 
+    # calculate enthalpy of vaporization
+    Hvap = (vap_enthalpy/nmols_vap) - (liq_enthalpy/nmols_liq)
+    Hvap_ave = np.mean(Hvap)
+
     # save average density
     job.doc.liq_density = liq_density_ave
     job.doc.vap_density = vap_density_ave
     job.doc.Pvap = Pvap_ave
+    job.doc.Hvap = Hvap_ave
     job.doc.liq_enthalpy = liq_enthalpy_ave
     job.doc.vap_enthalpy = vap_enthalpy_ave
     job.doc.nmols_liq = nmols_liq_ave
@@ -394,6 +400,7 @@ def calculate_props(job):
         "liq_density": liq_density,
         "vap_density": vap_density,
         "Pvap": Pvap,
+        "Hvap" : Hvap,
         "liq_enthalpy": liq_enthalpy,
         "vap_enthalpy": vap_enthalpy,
         "nmols_liq": nmols_liq,
