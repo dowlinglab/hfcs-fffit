@@ -39,7 +39,7 @@ def plot_property(df, prp_name, bounds, axis_name=None):
     ax.plot(yeqx, yeqx, color="black")
     ax.scatter(
         values_scaled_to_real(df["expt_" + prp_name], bounds),
-        values_scaled_to_real(df["md_" + prp_name], bounds),
+        values_scaled_to_real(df["sim_" + prp_name], bounds),
         alpha=0.2,
         color="black",
     )
