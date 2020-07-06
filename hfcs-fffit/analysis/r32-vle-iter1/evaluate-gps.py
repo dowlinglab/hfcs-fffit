@@ -53,20 +53,60 @@ df_all = prepare_df_vle(df_csv, R32)
 param_names = list(R32.param_names) + ["temperature"]
 property_name = "sim_liq_density"
 x_train, y_train, x_test, y_test = shuffle_and_split(
-    df_all, param_names, property_name, shuffle_seed=gp_shuffle_seed
+    df_all, param_names, property_name, shuffle_seed=gp_shuffle_seed, fraction_train=0.8
 )
 
 # Fit model
-model = run_gpflow_scipy(
+models = {}
+models["RBF"] = run_gpflow_scipy(
     x_train,
     y_train,
     gpflow.kernels.RBF(lengthscales=np.ones(R32.n_params + 1)),
 )
-models = {"RBF" : model}
+models["Matern32"] = run_gpflow_scipy(
+    x_train,
+    y_train,
+    gpflow.kernels.Matern32(lengthscales=np.ones(R32.n_params + 1)),
+)
+
+models["Matern52"] = run_gpflow_scipy(
+    x_train,
+    y_train,
+    gpflow.kernels.Matern52(lengthscales=np.ones(R32.n_params + 1)),
+)
 
 # Plot model performance on train and test points
 pdf.savefig(plot_model_performance(models, x_train, y_train, R32.liq_density_bounds))
 pdf.savefig(plot_model_performance(models, x_test, y_test, R32.liq_density_bounds))
+
+# Plot temperature slices
+figs = plot_slices_temperature(
+    models,
+    R32.n_params,
+    R32.temperature_bounds,
+    R32.liq_density_bounds,
+    property_name="Liquid Density [kg/m^3]",
+)
+
+for fig in figs:
+    pdf.savefig(fig)
+del figs
+
+# Plot parameter slices
+for param_name in R32.param_names:
+    figs = plot_slices_params(
+        models,
+        param_name,
+        R32.param_names,
+        300,
+        R32.temperature_bounds,
+        R32.liq_density_bounds,
+        property_name="Liquid Density [kg/m^3]",
+    )
+    for fig in figs:
+        pdf.savefig(fig)
+    del figs
+
 # Loop over test params
 for test_params in x_test[:,:R32.n_params]:
     train_points = []
@@ -98,20 +138,61 @@ for test_params in x_test[:,:R32.n_params]:
 param_names = list(R32.param_names) + ["temperature"]
 property_name = "sim_vap_density"
 x_train, y_train, x_test, y_test = shuffle_and_split(
-    df_all, param_names, property_name, shuffle_seed=gp_shuffle_seed
+    df_all, param_names, property_name, shuffle_seed=gp_shuffle_seed, fraction_train=0.8
 )
 
 # Fit model
-model = run_gpflow_scipy(
+models = {}
+models["RBF"] = run_gpflow_scipy(
     x_train,
     y_train,
     gpflow.kernels.RBF(lengthscales=np.ones(R32.n_params + 1)),
 )
-models = {"RBF" : model}
+models["Matern32"] = run_gpflow_scipy(
+    x_train,
+    y_train,
+    gpflow.kernels.Matern32(lengthscales=np.ones(R32.n_params + 1)),
+)
+
+models["Matern52"] = run_gpflow_scipy(
+    x_train,
+    y_train,
+    gpflow.kernels.Matern52(lengthscales=np.ones(R32.n_params + 1)),
+)
 
 # Plot model performance on train and test points
 pdf.savefig(plot_model_performance(models, x_train, y_train, R32.vap_density_bounds))
 pdf.savefig(plot_model_performance(models, x_test, y_test, R32.vap_density_bounds))
+
+# Plot temperature slices
+figs = plot_slices_temperature(
+    models,
+    R32.n_params,
+    R32.temperature_bounds,
+    R32.vap_density_bounds,
+    property_name="Vapor Density [kg/m^3]",
+)
+
+for fig in figs:
+    pdf.savefig(fig)
+del figs
+
+# Plot parameter slices
+for param_name in R32.param_names:
+    figs = plot_slices_params(
+        models,
+        param_name,
+        R32.param_names,
+        300,
+        R32.temperature_bounds,
+        R32.vap_density_bounds,
+        property_name="Vapor Density [kg/m^3]",
+    )
+    for fig in figs:
+        pdf.savefig(fig)
+    del figs
+
+
 # Loop over test params
 for test_params in x_test[:,:R32.n_params]:
     train_points = []
@@ -143,20 +224,61 @@ for test_params in x_test[:,:R32.n_params]:
 param_names = list(R32.param_names) + ["temperature"]
 property_name = "sim_Pvap"
 x_train, y_train, x_test, y_test = shuffle_and_split(
-    df_all, param_names, property_name, shuffle_seed=gp_shuffle_seed
+    df_all, param_names, property_name, shuffle_seed=gp_shuffle_seed, fraction_train=0.8
 )
 
 # Fit model
-model = run_gpflow_scipy(
+models = {}
+models["RBF"] = run_gpflow_scipy(
     x_train,
     y_train,
     gpflow.kernels.RBF(lengthscales=np.ones(R32.n_params + 1)),
 )
-models = {"RBF" : model}
+models["Matern32"] = run_gpflow_scipy(
+    x_train,
+    y_train,
+    gpflow.kernels.Matern32(lengthscales=np.ones(R32.n_params + 1)),
+)
+
+models["Matern52"] = run_gpflow_scipy(
+    x_train,
+    y_train,
+    gpflow.kernels.Matern52(lengthscales=np.ones(R32.n_params + 1)),
+)
 
 # Plot model performance on train and test points
 pdf.savefig(plot_model_performance(models, x_train, y_train, R32.Pvap_bounds))
 pdf.savefig(plot_model_performance(models, x_test, y_test, R32.Pvap_bounds))
+
+# Plot temperature slices
+figs = plot_slices_temperature(
+    models,
+    R32.n_params,
+    R32.temperature_bounds,
+    R32.Pvap_bounds,
+    property_name="Vapor Pressure [bar]",
+)
+
+for fig in figs:
+    pdf.savefig(fig)
+del figs
+
+# Plot parameter slices
+for param_name in R32.param_names:
+    figs = plot_slices_params(
+        models,
+        param_name,
+        R32.param_names,
+        300,
+        R32.temperature_bounds,
+        R32.Pvap_bounds,
+        property_name="Vapor Pressure [bar]",
+    )
+    for fig in figs:
+        pdf.savefig(fig)
+    del figs
+
+
 # Loop over test params
 for test_params in x_test[:,:R32.n_params]:
     train_points = []
@@ -184,24 +306,65 @@ for test_params in x_test[:,:R32.n_params]:
         )
     )
 
+    
 ### Fit GP Model to Hvap
 param_names = list(R32.param_names) + ["temperature"]
 property_name = "sim_Hvap"
 x_train, y_train, x_test, y_test = shuffle_and_split(
-    df_all, param_names, property_name, shuffle_seed=gp_shuffle_seed
-)
+    df_all, param_names, property_name, shuffle_seed=gp_shuffle_seed, fraction_train=0.8
+)    
 
 # Fit model
-model = run_gpflow_scipy(
+models = {}
+models["RBF"] = run_gpflow_scipy(
     x_train,
     y_train,
     gpflow.kernels.RBF(lengthscales=np.ones(R32.n_params + 1)),
 )
-models = {"RBF" : model}
+models["Matern32"] = run_gpflow_scipy(
+    x_train,
+    y_train,
+    gpflow.kernels.Matern32(lengthscales=np.ones(R32.n_params + 1)),
+)
+
+models["Matern52"] = run_gpflow_scipy(
+    x_train,
+    y_train,
+    gpflow.kernels.Matern52(lengthscales=np.ones(R32.n_params + 1)),
+)
 
 # Plot model performance on train and test points
 pdf.savefig(plot_model_performance(models, x_train, y_train, R32.Hvap_bounds))
 pdf.savefig(plot_model_performance(models, x_test, y_test, R32.Hvap_bounds))
+
+# Plot temperature slices
+figs = plot_slices_temperature(
+    models,
+    R32.n_params,
+    R32.temperature_bounds,
+    R32.Hvap_bounds,
+    property_name="Enthalpy of Vaporization [kJ/kg]",
+)
+
+for fig in figs:
+    pdf.savefig(fig)
+del figs
+
+# Plot parameter slices
+for param_name in R32.param_names:
+    figs = plot_slices_params(
+        models,
+        param_name,
+        R32.param_names,
+        300,
+        R32.temperature_bounds,
+        R32.Hvap_bounds,
+        property_name="Enthalpy of Vaporization [kJ/kg]",
+    )
+    for fig in figs:
+        pdf.savefig(fig)
+    del figs
+
 # Loop over test params
 for test_params in x_test[:,:R32.n_params]:
     train_points = []
