@@ -78,6 +78,35 @@ models["Matern52"] = run_gpflow_scipy(
 # Plot model performance on train and test points
 pdf.savefig(plot_model_performance(models, x_train, y_train, R125.liq_density_bounds))
 pdf.savefig(plot_model_performance(models, x_test, y_test, R125.liq_density_bounds))
+
+# Plot temperature slices
+figs = plot_slices_temperature(
+    models,
+    R125.n_params,
+    R125.temperature_bounds,
+    R125.liq_density_bounds,
+    property_name="Liquid Density [kg/m^3]",
+)
+
+for fig in figs:
+    pdf.savefig(fig)
+del figs
+
+# Plot parameter slices
+for param_name in R125.param_names:
+    figs = plot_slices_params(
+        models,
+        param_name,
+        R125.param_names,
+        300,
+        R125.temperature_bounds,
+        R125.liq_density_bounds,
+        property_name="Liquid Density [kg/m^3]",
+    )
+    for fig in figs:
+        pdf.savefig(fig)
+    del figs
+
 # Loop over test params
 for test_params in x_test[:,:R125.n_params]:
     train_points = []
@@ -134,6 +163,36 @@ models["Matern52"] = run_gpflow_scipy(
 # Plot model performance on train and test points
 pdf.savefig(plot_model_performance(models, x_train, y_train, R125.vap_density_bounds))
 pdf.savefig(plot_model_performance(models, x_test, y_test, R125.vap_density_bounds))
+
+# Plot temperature slices
+figs = plot_slices_temperature(
+    models,
+    R125.n_params,
+    R125.temperature_bounds,
+    R125.vap_density_bounds,
+    property_name="Vapor Density [kg/m^3]",
+)
+
+for fig in figs:
+    pdf.savefig(fig)
+del figs
+
+# Plot parameter slices
+for param_name in R125.param_names:
+    figs = plot_slices_params(
+        models,
+        param_name,
+        R125.param_names,
+        300,
+        R125.temperature_bounds,
+        R125.vap_density_bounds,
+        property_name="Vapor Density [kg/m^3]",
+    )
+    for fig in figs:
+        pdf.savefig(fig)
+    del figs
+
+
 # Loop over test params
 for test_params in x_test[:,:R125.n_params]:
     train_points = []
@@ -190,6 +249,36 @@ models["Matern52"] = run_gpflow_scipy(
 # Plot model performance on train and test points
 pdf.savefig(plot_model_performance(models, x_train, y_train, R125.Pvap_bounds))
 pdf.savefig(plot_model_performance(models, x_test, y_test, R125.Pvap_bounds))
+
+# Plot temperature slices
+figs = plot_slices_temperature(
+    models,
+    R125.n_params,
+    R125.temperature_bounds,
+    R125.Pvap_bounds,
+    property_name="Vapor Pressure [bar]",
+)
+
+for fig in figs:
+    pdf.savefig(fig)
+del figs
+
+# Plot parameter slices
+for param_name in R125.param_names:
+    figs = plot_slices_params(
+        models,
+        param_name,
+        R125.param_names,
+        300,
+        R125.temperature_bounds,
+        R125.Pvap_bounds,
+        property_name="Vapor Pressure [bar]",
+    )
+    for fig in figs:
+        pdf.savefig(fig)
+    del figs
+
+
 # Loop over test params
 for test_params in x_test[:,:R125.n_params]:
     train_points = []
@@ -247,6 +336,35 @@ models["Matern52"] = run_gpflow_scipy(
 # Plot model performance on train and test points
 pdf.savefig(plot_model_performance(models, x_train, y_train, R125.Hvap_bounds))
 pdf.savefig(plot_model_performance(models, x_test, y_test, R125.Hvap_bounds))
+
+# Plot temperature slices
+figs = plot_slices_temperature(
+    models,
+    R125.n_params,
+    R125.temperature_bounds,
+    R125.Hvap_bounds,
+    property_name="Enthalpy of Vaporization [kJ/kg]",
+)
+
+for fig in figs:
+    pdf.savefig(fig)
+del figs
+
+# Plot parameter slices
+for param_name in R125.param_names:
+    figs = plot_slices_params(
+        models,
+        param_name,
+        R125.param_names,
+        300,
+        R125.temperature_bounds,
+        R125.Hvap_bounds,
+        property_name="Enthalpy of Vaporization [kJ/kg]",
+    )
+    for fig in figs:
+        pdf.savefig(fig)
+    del figs
+
 # Loop over test params
 for test_params in x_test[:,:R125.n_params]:
     train_points = []
