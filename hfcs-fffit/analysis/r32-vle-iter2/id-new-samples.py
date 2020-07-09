@@ -28,7 +28,7 @@ R32 = R32Constants()
 ############################# QUANTITIES TO EDIT #############################
 ##############################################################################
 
-iternum = 1
+iternum = 2
 gp_shuffle_seed = 8278573
 
 ##############################################################################
@@ -192,7 +192,7 @@ new_points = new_points.append(pareto_points.sort_values("mse_Pvap").iloc[[0]])
 pareto_points.drop(index=new_points.index, inplace=True)
 
 # Search to ID well spaced points
-distance = 0.52
+distance = 0.43
 discarded_points = pd.DataFrame(columns=pareto_points.columns)
 
 np.random.seed(distance_seed)
