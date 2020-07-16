@@ -17,6 +17,6 @@ r125-iter1-density/data/initial-config/system_em.edr
 r125-iter1-density/data/initial-config/system_em.log
 r125-iter1-density/data/initial-config/system_em.tpr
 r125-iter1-density/data/initial-config/system_em.trr
-
+submit.sge
 *.ipynb_checkpoints
 *.egg-info*
