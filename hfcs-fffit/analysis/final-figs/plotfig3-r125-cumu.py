@@ -24,7 +24,7 @@ iternum = 5
 ##############################################################################
 ##############################################################################
 
-csv_path = "/scratch365/rdefever/hfcs-fffit/hfcs-fffit/analysis/csv/"
+csv_path = "../csv/"
 in_csv_names = [
     "r125-vle-iter" + str(i) + "-results.csv" for i in range(1, iternum + 1)
 ]
@@ -121,8 +121,7 @@ def main():
     plt.subplots_adjust(hspace=.0)
     plt.subplots_adjust(left = 0.18, right=0.92, top=0.84)
     axes[0].legend(fontsize=12, loc=(0.23,1.05), ncol=2)
-    #axes[0].text(0.0,35,"(b) R-125", fontsize=16)
-    fig.savefig("fig3_r125-cumu.pdf")
+    fig.savefig("pdfs/fig3_r125-cumu.pdf")
 
 if __name__ == "__main__":
     main()

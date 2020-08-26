@@ -26,7 +26,7 @@ iternum = 4
 ##############################################################################
 ##############################################################################
 
-csv_path = "/scratch365/rdefever/hfcs-fffit/hfcs-fffit/analysis/csv/"
+csv_path = "../csv/"
 in_csv_names = [
     "r125-density-iter" + str(i) + "-results.csv" for i in range(1, iternum + 1)
 ]
@@ -138,7 +138,7 @@ def main():
     axins.yaxis.set_ticks_position("both")
 
     fig.tight_layout()
-    fig.savefig("fig2_r125-density-cumu.pdf")
+    fig.savefig("pdfs/fig2-r125-density-cumu.pdf")
 
 if __name__ == "__main__":
     main()

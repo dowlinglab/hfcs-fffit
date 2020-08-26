@@ -5,32 +5,22 @@ import matplotlib
 import matplotlib.pyplot as plt
 import seaborn
 
-from fffit.utils import (
-    values_real_to_scaled,
-    values_scaled_to_real,
-)
-
 sys.path.append("../")
 
 from utils.r125 import R125Constants
-from utils.id_new_samples import prepare_df_vle
-from utils.analyze_samples import prepare_df_vle_errors
-from utils.plot import plot_property, render_mpl_table
 
 R125 = R125Constants()
 
 matplotlib.rc("font", family="sans-serif")
 matplotlib.rc("font", serif="Arial")
 
-csv_path = "/scratch365/rdefever/hfcs-fffit/hfcs-fffit/analysis/csv/r125-pareto.csv"
+csv_path = "../csv/r125-pareto.csv"
 df = pd.read_csv(csv_path, index_col=0)
 
 def main():
 
     # Plot VLE envelopes
     clrs = seaborn.color_palette('bright', n_colors=len(df))
-    #random.seed(13)
-    #random.seed(12)
     np.random.seed(10)
     np.random.shuffle(clrs)
 
@@ -87,7 +77,7 @@ def main():
     ax.set_ylabel("T (K)", fontsize=32, labelpad=20)
     ax.set_xlabel(r"$\mathregular{\rho}$ (kg/m$\mathregular{^3}$)", fontsize=32, labelpad=10)
     fig.tight_layout()
-    fig.savefig("fig1-vle-r125.pdf")
+    fig.savefig("pdfs/fig1-vle-r125.pdf")
 
     # Plot Vapor Pressure
     fig, ax = plt.subplots()
@@ -113,7 +103,6 @@ def main():
     ax.set_xticks([220,230,240,250,260,270,290,300,310], minor=True)
     ax.set_yticks([0,10,20])
     ax.set_yticks([2,4,6,8,12,14,16,18,22,24,26], minor=True)
-    #ax.set_yscale("log")
     ax.tick_params("both", direction="in", which="both", length=4, labelsize=26, pad=10)
     ax.tick_params("both", which="major", length=8)
     ax.xaxis.set_ticks_position("both")
@@ -123,7 +112,7 @@ def main():
     ax.set_ylabel(r"$\mathregular{P_{vap}}$ (bar)", fontsize=32, labelpad=10)
 
     fig.tight_layout()
-    fig.savefig("fig1-pvap-r125.pdf")
+    fig.savefig("pdfs/fig1-pvap-r125.pdf")
 
     # Plot Enthalpy of Vaporization
     fig, ax = plt.subplots()
@@ -158,7 +147,7 @@ def main():
 
 
     fig.tight_layout()
-    fig.savefig("fig1-hvap-r125.pdf")
+    fig.savefig("pdfs/fig1-hvap-r125.pdf")
 
     df["mape_norm_tot"] = (
         df["mape_Tc"] / df["mape_Tc"].max() +
@@ -224,7 +213,7 @@ def main():
     ax.set_ylabel("T (K)", fontsize=32, labelpad=20)
     ax.set_xlabel(r"$\mathregular{\rho}$ (kg/m$\mathregular{^3}$)", fontsize=32, labelpad=10)
     fig.tight_layout()
-    fig.savefig("fig1-vle-top-r125.pdf")
+    fig.savefig("pdfs/fig1-vle-top-r125.pdf")
 
     # Plot Vapor Pressure
     fig, ax = plt.subplots()
@@ -259,7 +248,7 @@ def main():
     ax.set_ylabel(r"$\mathregular{P_{vap}}$ (bar)", fontsize=32, labelpad=10)
 
     fig.tight_layout()
-    fig.savefig("fig1-pvap-top-r125.pdf")
+    fig.savefig("pdfs/fig1-pvap-top-r125.pdf")
 
     # Plot Enthalpy of Vaporization
     fig, ax = plt.subplots()
@@ -294,7 +283,7 @@ def main():
 
 
     fig.tight_layout()
-    fig.savefig("fig1-hvap-top-r125.pdf")
+    fig.savefig("pdfs/fig1-hvap-top-r125.pdf")
 
 
 if __name__ == "__main__":
