@@ -20,3 +20,4 @@ r125-iter1-density/data/initial-config/system_em.trr
 submit.sge
 *.ipynb_checkpoints
 *.egg-info*
+*DS_Store
