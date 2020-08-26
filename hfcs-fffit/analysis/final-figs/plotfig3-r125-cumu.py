@@ -122,7 +122,7 @@ def main():
     plt.subplots_adjust(left = 0.18, right=0.92, top=0.84)
     axes[0].legend(fontsize=12, loc=(0.23,1.05), ncol=2)
     #axes[0].text(0.0,35,"(b) R-125", fontsize=16)
-    fig.savefig("fig2_r125-cumu.pdf")
+    fig.savefig("fig3_r125-cumu.pdf")
 
 if __name__ == "__main__":
     main()

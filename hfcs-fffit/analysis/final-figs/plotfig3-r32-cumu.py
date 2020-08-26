@@ -107,7 +107,7 @@ def main():
     plt.subplots_adjust(left = 0.18, right=0.92, top=0.84)
     axes[0].legend(fontsize=12, loc=(0.63,1.05))
     #axes[0].text(0.0,35,"(b) R-32", fontsize=16)
-    fig.savefig("fig2_r32-cumu.pdf")
+    fig.savefig("fig3_r32-cumu.pdf")
 
 if __name__ == "__main__":
     main()
