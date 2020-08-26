@@ -34,6 +34,7 @@ csv_path = "/scratch365/rdefever/hfcs-fffit/hfcs-fffit/analysis/csv/"
 in_csv_names = [
     "r32-vle-iter" + str(i) + "-results.csv" for i in range(1, iternum + 1)
 ]
+out_csv_name = "r32-pareto.csv"
 
 # Read files
 df_csvs = [
@@ -56,7 +57,7 @@ def main():
     )
     df_paramsets = df_paramsets.join(pd.DataFrame(result, columns=["is_pareto"]))
 
-    df_paramsets[df_paramsets["is_pareto"]==True].to_csv("pareto.csv")
+    df_paramsets[df_paramsets["is_pareto"]==True].to_csv(csv_path + "/" + out_csv_name)
 
 
 if __name__ == "__main__":

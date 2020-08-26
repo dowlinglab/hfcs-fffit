@@ -4,6 +4,62 @@ from scipy.stats import linregress
 
 from fffit.utils import values_scaled_to_real
 
+def prepare_df_density_errors(df, molecule):
+    """Create a dataframe with mean square error (mse) and mean absolute
+    percent error (mape) for each unique parameter set.
+
+    Parameters
+    ----------
+    df : pandas.Dataframe
+        per simulation results
+    molecule : R32, R125
+        molecule class with bounds/experimental data
+
+    Returns
+    -------
+    df_new : pandas.Dataframe
+        dataframe with one row per parameter set and including
+        the MSE and MAPE for liq_density
+    """
+    new_data = []
+    for group, values in df.groupby(list(molecule.param_names)):
+
+        # Temperatures
+        temps = values_scaled_to_real(
+            values["temperature"], molecule.temperature_bounds
+        )
+
+        # Liquid density
+        sim_liq_density = values_scaled_to_real(
+            values["md_density"], molecule.liq_density_bounds
+        )
+        expt_liq_density = values_scaled_to_real(
+            values["expt_density"], molecule.liq_density_bounds
+        )
+        mse_liq_density = np.mean((sim_liq_density - expt_liq_density) ** 2)
+        mape_liq_density = (
+            np.mean(
+                np.abs((sim_liq_density - expt_liq_density) / expt_liq_density)
+            )
+            * 100.0
+        )
+        properties = {
+            f"sim_liq_density_{float(temp):.0f}K": float(liq_density)
+            for temp, liq_density in zip(temps, sim_liq_density)
+        }
+
+        new_quantities = {
+            **properties,
+            "mse_liq_density": mse_liq_density,
+            "mape_liq_density": mape_liq_density,
+        }
+
+        new_data.append(list(group) + list(new_quantities.values()))
+
+    columns = list(molecule.param_names) + list(new_quantities.keys())
+    new_df = pd.DataFrame(new_data, columns=columns)
+
+    return new_df
 
 def prepare_df_vle_errors(df, molecule):
     """Create a dataframe with mean square error (mse) and mean absolute
