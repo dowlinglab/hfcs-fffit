@@ -120,7 +120,7 @@ def main():
     axes[5].tick_params(labelbottom=True)
     plt.subplots_adjust(hspace=.0)
     plt.subplots_adjust(left = 0.18, right=0.92, top=0.84)
-    axes[0].legend(fontsize=12, loc=(0.23,1.05), ncol=2)
+    axes[0].legend(fontsize=12, loc=(0.21,1.05), ncol=2)
     fig.savefig("pdfs/fig3_r125-cumu.pdf")
 
 if __name__ == "__main__":

@@ -74,8 +74,11 @@ def main():
     ax.xaxis.set_ticks_position("both")
     ax.yaxis.set_ticks_position("both")
 
-    ax.set_ylabel("T (K)", fontsize=32, labelpad=20)
-    ax.set_xlabel(r"$\mathregular{\rho}$ (kg/m$\mathregular{^3}$)", fontsize=32, labelpad=10)
+    ax.set_ylabel("T (K)", fontsize=32, labelpad=10)
+    ax.set_xlabel(r"$\mathregular{\rho}$ (kg/m$\mathregular{^3}$)", fontsize=32, labelpad=20)
+    for axis in ['top','bottom','left','right']:
+        ax.spines[axis].set_linewidth(2.0)
+
     fig.tight_layout()
     fig.savefig("pdfs/fig1-vle-r32.pdf")
 
@@ -110,6 +113,9 @@ def main():
 
     ax.set_xlabel("T (K)", fontsize=32, labelpad=20)
     ax.set_ylabel(r"$\mathregular{P_{vap}}$ (bar)", fontsize=32, labelpad=10)
+    for axis in ['top','bottom','left','right']:
+        ax.spines[axis].set_linewidth(2.0)
+
 
     fig.tight_layout()
     fig.savefig("pdfs/fig1-pvap-r32.pdf")
@@ -144,7 +150,8 @@ def main():
 
     ax.set_xlabel("T (K)", fontsize=32, labelpad=20)
     ax.set_ylabel(r"$\mathregular{\Delta H_{vap}}$ (kJ/kg)", fontsize=32, labelpad=10)
-
+    for axis in ['top','bottom','left','right']:
+        ax.spines[axis].set_linewidth(2.0)
 
     fig.tight_layout()
     fig.savefig("pdfs/fig1-hvap-r32.pdf")
@@ -210,8 +217,11 @@ def main():
     ax.xaxis.set_ticks_position("both")
     ax.yaxis.set_ticks_position("both")
 
-    ax.set_ylabel("T (K)", fontsize=32, labelpad=20)
+    ax.set_ylabel("T (K)", fontsize=32, labelpad=10)
     ax.set_xlabel(r"$\mathregular{\rho}$ (kg/m$\mathregular{^3}$)", fontsize=32, labelpad=10)
+    for axis in ['top','bottom','left','right']:
+        ax.spines[axis].set_linewidth(2.0)
+
     fig.tight_layout()
     fig.savefig("pdfs/fig1-vle-top-r32.pdf")
 
@@ -246,6 +256,8 @@ def main():
 
     ax.set_xlabel("T (K)", fontsize=32, labelpad=20)
     ax.set_ylabel(r"$\mathregular{P_{vap}}$ (bar)", fontsize=32, labelpad=10)
+    for axis in ['top','bottom','left','right']:
+        ax.spines[axis].set_linewidth(2.0)
 
     fig.tight_layout()
     fig.savefig("pdfs/fig1-pvap-top-r32.pdf")
@@ -280,6 +292,8 @@ def main():
 
     ax.set_xlabel("T (K)", fontsize=32, labelpad=20)
     ax.set_ylabel(r"$\mathregular{\Delta H_{vap}}$ (kJ/kg)", fontsize=32, labelpad=10)
+    for axis in ['top','bottom','left','right']:
+        ax.spines[axis].set_linewidth(2.0)
 
 
     fig.tight_layout()
