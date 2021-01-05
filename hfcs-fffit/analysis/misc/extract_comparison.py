@@ -24,17 +24,20 @@ for name, project in projects.items():
     hvap_unc = []
 
     for job in project:
-        temp.append(job.sp.T)
-        pres.append(job.sp.P)
+        try:
+            liq_density.append(job.doc.liq_density)
+            liq_density_unc.append(job.doc.liq_density_unc)
+            vap_density.append(job.doc.vap_density)
+            vap_density_unc.append(job.doc.vap_density_unc)
+            pvap.append(job.doc.Pvap)
+            pvap_unc.append(job.doc.Pvap_unc)
+            hvap.append(job.doc.Hvap)
+            hvap_unc.append(job.doc.Hvap_unc)
+            temp.append(job.sp.T)
+            pres.append(job.sp.P)
+        except AttributeError:
+            pass
 
-        liq_density.append(job.doc.liq_density)
-        liq_density_unc.append(job.doc.liq_density_unc)
-        vap_density.append(job.doc.vap_density)
-        vap_density_unc.append(job.doc.vap_density_unc)
-        pvap.append(job.doc.Pvap)
-        pvap_unc.append(job.doc.Pvap_unc)
-        hvap.append(job.doc.Hvap)
-        hvap_unc.append(job.doc.Hvap_unc)
 
     df["T_K"] = temp
     df["P_bar"] = pres
