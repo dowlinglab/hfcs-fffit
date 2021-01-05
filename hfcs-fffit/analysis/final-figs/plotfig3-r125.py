@@ -14,8 +14,9 @@ R125 = R125Constants()
 matplotlib.rc("font", family="sans-serif")
 matplotlib.rc("font", serif="Arial")
 
-csv_path = "../csv/r125-pareto.csv"
-df = pd.read_csv(csv_path, index_col=0)
+df = pd.read_csv("../csv/r125-pareto.csv", index_col=0)
+df_gaff = pd.read_csv("../csv/r125-gaff.csv", index_col=0)
+
 
 def main():
 
