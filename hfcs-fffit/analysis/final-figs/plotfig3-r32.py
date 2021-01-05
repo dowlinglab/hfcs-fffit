@@ -14,8 +14,10 @@ R32 = R32Constants()
 matplotlib.rc("font", family="sans-serif")
 matplotlib.rc("font", serif="Arial")
 
-csv_path = "../csv/r32-pareto.csv"
-df = pd.read_csv(csv_path, index_col=0)
+df = pd.read_csv("../csv/r32-pareto.csv", index_col=0)
+df_gaff = pd.read_csv("../csv/r32-gaff.csv", index_col=0)
+df_rabbe = pd.read_csv("../csv/r32-rabbe.csv", index_col=0)
+
 
 def main():
 
@@ -80,7 +82,7 @@ def main():
         ax.spines[axis].set_linewidth(2.0)
 
     fig.tight_layout()
-    fig.savefig("pdfs/fig1-vle-r32.pdf")
+    fig.savefig("pdfs/fig3-vle-r32.pdf")
 
     # Plot Vapor Pressure
     fig, ax = plt.subplots()
@@ -118,7 +120,7 @@ def main():
 
 
     fig.tight_layout()
-    fig.savefig("pdfs/fig1-pvap-r32.pdf")
+    fig.savefig("pdfs/fig3-pvap-r32.pdf")
 
     # Plot Enthalpy of Vaporization
     fig, ax = plt.subplots()
@@ -154,7 +156,7 @@ def main():
         ax.spines[axis].set_linewidth(2.0)
 
     fig.tight_layout()
-    fig.savefig("pdfs/fig1-hvap-r32.pdf")
+    fig.savefig("pdfs/fig3-hvap-r32.pdf")
 
     df["mape_norm_tot"] = (
         df["mape_Tc"] / df["mape_Tc"].max() +
@@ -223,7 +225,7 @@ def main():
         ax.spines[axis].set_linewidth(2.0)
 
     fig.tight_layout()
-    fig.savefig("pdfs/fig1-vle-top-r32.pdf")
+    fig.savefig("pdfs/fig3-vle-top-r32.pdf")
 
     # Plot Vapor Pressure
     fig, ax = plt.subplots()
@@ -260,7 +262,7 @@ def main():
         ax.spines[axis].set_linewidth(2.0)
 
     fig.tight_layout()
-    fig.savefig("pdfs/fig1-pvap-top-r32.pdf")
+    fig.savefig("pdfs/fig3-pvap-top-r32.pdf")
 
     # Plot Enthalpy of Vaporization
     fig, ax = plt.subplots()
@@ -297,7 +299,7 @@ def main():
 
 
     fig.tight_layout()
-    fig.savefig("pdfs/fig1-hvap-top-r32.pdf")
+    fig.savefig("pdfs/fig3-hvap-top-r32.pdf")
 
 
 if __name__ == "__main__":

@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import matplotlib
 import matplotlib.pyplot as plt
+from matplotlib.ticker import AutoMinorLocator, MultipleLocator
 import seaborn
 
 sys.path.append("../")
@@ -60,7 +61,7 @@ def main():
             dfs_paramsets[0].sort_values(name)[name],
             np.arange(1, 26,1),
             '-o',
-            markersize=4,
+            markersize=6,
             alpha=0.8,
             label="VLE-1",
         )
@@ -68,7 +69,7 @@ def main():
             dfs_paramsets[1].sort_values(name)[name],
             np.arange(1, 26, 1),
             '-o',
-            markersize=4,
+            markersize=6,
             alpha=0.8,
             label="VLE-2",
         )
@@ -76,37 +77,39 @@ def main():
             dfs_paramsets[2].sort_values(name)[name],
             np.arange(1, 26, 1),
             '-o',
-            markersize=4,
+            markersize=6,
             alpha=0.8,
             label="VLE-3",
         )
         axes[piter].text(
-            19.6, 1.0,
+            9.7, 2.5,
             label,
             verticalalignment="bottom",
             horizontalalignment="right",
-            fontsize=13
+            fontsize=16,
         )
-        axes[piter].set_ylim(0,25)
-        axes[piter].set_xlim(0,20)
+        axes[piter].set_ylim(0,28)
+        axes[piter].set_xlim(0,10)
         axes[piter].set_yticks([0,10,20])
         axes[piter].set_yticks([5,15], minor=True)
-        axes[piter].set_xticks([0,5,10,15,20])
-        axes[piter].set_xticks([1,2,3,4,6,7,8,9,11,12,13,14,16,17,18,19], minor=True)
-        axes[piter].tick_params("both", direction="in", which="both", labelbottom=False, length=1.5, labelsize=12)
-        axes[piter].tick_params("both", which="major", length=3)
+        axes[piter].xaxis.set_major_locator(MultipleLocator(2))
+        axes[piter].xaxis.set_minor_locator(AutoMinorLocator(2))
+        axes[piter].tick_params("both", direction="in", which="both", labelbottom=False, length=2, labelsize=16)
+        axes[piter].tick_params("both", which="major", length=4)
         axes[piter].xaxis.set_ticks_position("both")
         axes[piter].yaxis.set_ticks_position("both")
         piter +=1
 
-    text = axes[5].set_ylabel("Cumulative number parameter sets", fontsize=16, labelpad=15)
+    text = axes[5].set_ylabel(r"$N_\mathrm{cumu.}$ parameter sets", fontsize=20, labelpad=14)
     text.set_y(3)
-    axes[5].set_xlabel("Mean abs. % error", fontsize=16, labelpad=10)
+    axes[5].set_xlabel("Property MAPE", fontsize=20, labelpad=10)
     axes[5].tick_params(labelbottom=True)
     plt.subplots_adjust(hspace=.0)
-    plt.subplots_adjust(left = 0.18, right=0.92, top=0.84)
-    axes[0].legend(fontsize=12, loc=(0.63,1.05))
-    fig.savefig("pdfs/fig3_r32-cumu.pdf")
+    plt.subplots_adjust(left = 0.18, right=0.92, top=0.84, bottom=0.15)
+    axes[0].legend(fontsize=16, loc=(-0.07,1.07), ncol=3, columnspacing=1, handletextpad=0.5)
+    #print(fig.get_size_inches())
+    fig.set_size_inches(5, 6)
+    fig.savefig("pdfs/fig2_r32-cumu-vle.pdf")
 
 if __name__ == "__main__":
     main()
