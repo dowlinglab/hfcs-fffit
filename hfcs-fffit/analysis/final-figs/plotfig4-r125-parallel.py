@@ -72,7 +72,7 @@ def main():
     for dim, ax in enumerate(axes):
         ax.xaxis.set_major_locator(ticker.FixedLocator([dim]))
         set_ticks_for_axis(ax, param_bounds[dim], nticks=6)
-        ax.set_xticklabels([col_names[dim]], fontsize=30)
+        ax.set_xticklabels([col_names[dim]], fontsize=40)
         ax.set_ylim(-0.05,1.05)
         # Add white background behind labels
         for label in ax.get_yticklabels():
@@ -84,30 +84,23 @@ def main():
                     boxstyle=mpatch.BoxStyle("round4")
                 )
             )
+        ax.spines['top'].set_visible(False)
+        ax.spines['bottom'].set_visible(False)
+        ax.spines['left'].set_linewidth(2.0)
 
     ax = axes[-1]
     ax.xaxis.set_major_locator(ticker.FixedLocator([n_axis-2, n_axis-1]))
-    ax.set_xticklabels([col_names[-2], col_names[-1]], fontsize=30)
+    ax.set_xticklabels([col_names[-2], col_names[-1]], fontsize=40)
 
     ax = plt.twinx(axes[-1])
     ax.set_ylim(-0.05, 1.05)
     set_ticks_for_axis(ax, param_bounds[-1], nticks=6)
+    ax.spines['top'].set_visible(False)
+    ax.spines['bottom'].set_visible(False)
+    ax.spines['right'].set_linewidth(2.0)
 
-    # Move the final axis' ticks to the right-hand side
-    #ax = plt.twinx(axes[-1])
-    #dim = len(axes)
-    #ax.xaxis.set_major_locator(ticker.FixedLocator([x_vals[-2], x_vals[-1]]))
-    #set_ticks_for_axis(ax, param_bounds[-1], nticks=6)
-    #ax.set_xticklabels([col_names[-2], col_names[-1]], fontsize=30)
-    #for label in ax.xaxis.get_majorticklabels():
-    #    label.set_fontsize(30)
-    #    print(label)
-    #for label in ax.xaxis.get_majorticklabels():
-    #    #label.set_fontsize(30)
-    #    print(label.get_fontsize())
-    
     # Remove space between subplots
-    plt.subplots_adjust(wspace=0)
+    plt.subplots_adjust(wspace=0, bottom=0.2)
     
     fig.savefig("pdfs/fig4-r125-parallel.pdf")
 
@@ -127,7 +120,7 @@ def set_ticks_for_axis(ax, param_bounds, nticks):
     ax.yaxis.set_minor_locator(ticker.AutoMinorLocator(2))
     ax.tick_params("y", direction="inout", which="both", length=7)
     ax.tick_params("y", which="major", length=14)
- 
+    ax.tick_params("x", pad=15) 
 
 if __name__ == "__main__":
     main()
