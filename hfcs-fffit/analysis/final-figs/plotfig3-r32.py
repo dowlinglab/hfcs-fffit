@@ -35,21 +35,21 @@ def main():
             df.filter(regex=(f"liq_density_{float(temp):.0f}K")),
             np.tile(temp, len(df)),
             c=clrs,
-            s=180,
+            s=160,
             alpha=0.2,
         )
         ax.scatter(
             df.filter(regex=(f"vap_density_{float(temp):.0f}K")),
             np.tile(temp, len(df)),
             c=clrs,
-            s=180,
+            s=160,
             alpha=0.2,
         )
     ax.scatter(
         df.filter(regex=("sim_rhoc")),
         df.filter(regex=("sim_Tc")),
         c=clrs,
-        s=180,
+        s=160,
         alpha=0.2,
     )
 
@@ -84,8 +84,8 @@ def main():
     ax.scatter(
         df_raabe["rholiq_kgm3"],
         df_raabe["T_K"],
-        c='#0a4091',
-        s=120,
+        c='#0989d9',
+        s=140,
         alpha=0.7,
         label="Raabe",
         marker='^',
@@ -93,8 +93,8 @@ def main():
     ax.scatter(
         df_raabe["rhovap_kgm3"],
         df_raabe["T_K"],
-        c='#0a4091',
-        s=120,
+        c='#0989d9',
+        s=140,
         alpha=0.7,
         label="Raabe",
         marker='^',
@@ -102,8 +102,8 @@ def main():
     ax.scatter(
         rhoc,
         tc,
-        c='#0a4091',
-        s=120,
+        c='#0989d9',
+        s=140,
         alpha=0.7,
         marker='^',
     )
@@ -155,7 +155,7 @@ def main():
             np.tile(temp, len(df)),
             df.filter(regex=(f"Pvap_{float(temp):.0f}K")),
             c=clrs,
-            s=180,
+            s=160,
             alpha=0.2,
         )
     ax.scatter(
@@ -170,8 +170,8 @@ def main():
     ax.scatter(
         df_raabe["T_K"],
         df_raabe["pvap_bar"],
-        c='#0a4091',
-        s=120,
+        c='#0989d9',
+        s=140,
         alpha=0.7,
         label="Raabe",
         marker='^',
@@ -214,7 +214,7 @@ def main():
             np.tile(temp, len(df)),
             df.filter(regex=(f"Hvap_{float(temp):.0f}K")),
             c=clrs,
-            s=180,
+            s=160,
             alpha=0.2,
         )
     ax.scatter(
@@ -229,8 +229,8 @@ def main():
     ax.scatter(
         df_raabe["T_K"],
         df_raabe["hvap_kJmol"] / R32.molecular_weight * 1000.0,
-        c='#0a4091',
-        s=120,
+        c='#0989d9',
+        s=140,
         alpha=0.7,
         label="Raabe",
         marker='^',

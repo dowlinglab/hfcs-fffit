@@ -34,21 +34,21 @@ def main():
             df.filter(regex=(f"liq_density_{float(temp):.0f}K")),
             np.tile(temp, len(df)),
             c=clrs,
-            s=180,
+            s=160,
             alpha=0.2,
         )
         ax.scatter(
             df.filter(regex=(f"vap_density_{float(temp):.0f}K")),
             np.tile(temp, len(df)),
             c=clrs,
-            s=180,
+            s=160,
             alpha=0.2,
         )
     ax.scatter(
         df.filter(regex=("sim_rhoc")),
         df.filter(regex=("sim_Tc")),
         c=clrs,
-        s=180,
+        s=160,
         alpha=0.2,
     )
 
@@ -126,7 +126,7 @@ def main():
             np.tile(temp, len(df)),
             df.filter(regex=(f"Pvap_{float(temp):.0f}K")),
             c=clrs,
-            s=180,
+            s=160,
             alpha=0.2,
         )
     ax.scatter(
@@ -176,7 +176,7 @@ def main():
             np.tile(temp, len(df)),
             df.filter(regex=(f"Hvap_{float(temp):.0f}K")),
             c=clrs,
-            s=180,
+            s=160,
             alpha=0.2,
         )
     ax.scatter(
