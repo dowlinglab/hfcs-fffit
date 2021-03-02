@@ -155,7 +155,7 @@ def main():
     axins.yaxis.set_ticks_position("both")
 
     fig.tight_layout()
-    fig.savefig("pdfs/fig2-r32-density-cumu.pdf")
+    fig.savefig("pdfs/fig2_r32-density-cumu.pdf")
 
 if __name__ == "__main__":
     main()

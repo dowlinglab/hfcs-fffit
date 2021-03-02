@@ -114,7 +114,7 @@ def main():
     # Remove space between subplots
     plt.subplots_adjust(wspace=0, bottom=0.2, left=0.05, right=0.93)
     
-    fig.savefig("pdfs/fig4-r32-parallel.pdf")
+    fig.savefig("pdfs/fig_r32-parallel.pdf")
 
 
 def set_ticks_for_axis(ax, param_bounds, nticks):

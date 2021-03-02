@@ -247,7 +247,7 @@ def main():
     ax2.text(0.6,  0.8, "R125", fontsize=36, transform=ax2.transAxes)
     fig.subplots_adjust(bottom=0.2, top=0.75, left=0.15, right=0.95, wspace=0.55)
 
-    fig.savefig("pdfs/fig3-vle.pdf")
+    fig.savefig("pdfs/fig3_results-vle.pdf")
 
     # Plot Pvap / Hvap
     fig, axs = plt.subplots(2, 2)
@@ -463,7 +463,7 @@ def main():
     axs[0,0].legend(loc="lower left", bbox_to_anchor=(0.25, 1.05), ncol=3, fontsize=12, handletextpad=0.1, markerscale=0.8, edgecolor="dimgrey")
 
     fig.subplots_adjust(bottom=0.15, top=0.88, left=0.15, right=0.95, wspace=0.55, hspace=0.5)
-    fig.savefig("pdfs/fig3-si.pdf")
+    fig.savefig("pdfs/fig3_result-si.pdf")
 
 
 def calc_critical(df):
