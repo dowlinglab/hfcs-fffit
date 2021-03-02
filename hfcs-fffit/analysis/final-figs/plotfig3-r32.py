@@ -96,7 +96,6 @@ def main():
         c='#0989d9',
         s=140,
         alpha=0.7,
-        label="Raabe",
         marker='^',
     )
     ax.scatter(
@@ -115,6 +114,7 @@ def main():
         marker="x",
         linewidths=2,
         s=200,
+        label="Expt."
     )
     ax.scatter(
         R32.expt_vap_density.values(),
@@ -140,11 +140,13 @@ def main():
     ax.yaxis.set_ticks_position("both")
 
     ax.set_ylabel("T (K)", fontsize=32, labelpad=10)
-    ax.set_xlabel(r"$\mathregular{\rho}$ (kg/m$\mathregular{^3}$)", fontsize=32, labelpad=20)
+    ax.set_xlabel(r"$\mathregular{\rho}$ (kg/m$\mathregular{^3}$)", fontsize=32, labelpad=15)
     for axis in ['top','bottom','left','right']:
         ax.spines[axis].set_linewidth(2.0)
 
-    fig.tight_layout()
+    ax.legend(loc="lower left", bbox_to_anchor=(-0.3, 1.0), ncol=3, fontsize=20, handletextpad=0.1, markerscale=0.8)
+    fig.subplots_adjust(bottom=0.3, top=0.8, left=0.25, right=0.95)
+    #fig.tight_layout()
     fig.savefig("pdfs/fig3-vle-r32.pdf")
 
     # Plot Vapor Pressure
@@ -248,7 +250,7 @@ def main():
     ax.xaxis.set_major_locator(MultipleLocator(40))
     ax.xaxis.set_minor_locator(AutoMinorLocator(4))
 
-    ax.set_ylim(90,410)
+    ax.set_ylim(-10,410)
     ax.yaxis.set_major_locator(MultipleLocator(100))
     ax.yaxis.set_minor_locator(AutoMinorLocator(5))
 

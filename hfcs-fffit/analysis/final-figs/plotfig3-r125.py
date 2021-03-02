@@ -115,7 +115,9 @@ def main():
     for axis in ['top','bottom','left','right']:
         ax.spines[axis].set_linewidth(2.0)
 
-    fig.tight_layout()
+    #fig.tight_layout()
+    ax.legend(loc="lower left", bbox_to_anchor=(-0.3, 1.0), ncol=3, fontsize=20, handletextpad=0.1, markerscale=0.8)
+    fig.subplots_adjust(bottom=0.3, top=0.8, left=0.25, right=0.95)
     fig.savefig("pdfs/fig3-vle-r125.pdf")
 
     # Plot Vapor Pressure
@@ -201,7 +203,7 @@ def main():
     ax.xaxis.set_major_locator(MultipleLocator(40))
     ax.xaxis.set_minor_locator(AutoMinorLocator(4))
 
-    ax.set_ylim(90,410)
+    ax.set_ylim(-10,410)
     ax.yaxis.set_major_locator(MultipleLocator(100))
     ax.yaxis.set_minor_locator(AutoMinorLocator(5))
 
