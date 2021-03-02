@@ -9,6 +9,7 @@ import seaborn
 sys.path.append("../")
 
 from fffit.utils import values_scaled_to_real
+from fffit.utils import values_real_to_scaled
 from utils.r125 import R125Constants
 from matplotlib import ticker
 
@@ -25,16 +26,21 @@ KJMOL_TO_K = 1.0 / K_B
 def main():
     # ID the top ten by lowest average MAPE
     df = pd.read_csv("../csv/r125-pareto.csv", index_col=0)
-    #df = df.loc[df.filter(regex="mape*").mean(axis=1).sort_values()[:10].index]
+    dff = pd.read_csv("../csv/r125-final-4.csv", index_col=0)
 
-    colors = seaborn.color_palette('bright', n_colors=len(df))
-    #data = values_scaled_to_real(df[list(R125.param_names)].values, R125.param_bounds)
-    #data[:,:3] = data[:,:3] * NM_TO_ANGSTROM
-    #data[:,4:6] = data[:,4:] * KJMOL_TO_K
+    seaborn.set_palette('bright', n_colors=len(df))
     data = df[list(R125.param_names)].values
+    result_bounds = np.array([[0, 25], [0, 50], [0, 50], [0, 25]])
+    results = values_real_to_scaled(df[["mape_liq_density", "mape_vap_density", "mape_Pvap", "mape_Hvap"]].values, result_bounds)
+    data_f = dff[list(R125.param_names)].values
+    results_f = values_real_to_scaled(dff[["mape_liq_density", "mape_vap_density", "mape_Pvap", "mape_Hvap"]].values, result_bounds)
     param_bounds = R125.param_bounds
     param_bounds[:5] = param_bounds[:5] * NM_TO_ANGSTROM
     param_bounds[5:] = param_bounds[5:] * KJMOL_TO_K
+
+    data = np.hstack((data, results))
+    data_f = np.hstack((data_f, results_f))
+    bounds = np.vstack((param_bounds, result_bounds))
 
     col_names = [
         r"$\sigma_{C1}$",
@@ -47,6 +53,10 @@ def main():
         r"$\epsilon_{F1}$",
         r"$\epsilon_{F2}$",
         r"$\epsilon_{H}$",
+        "MAPE\n" + r"$\rho_{\mathrm{liq}}$",
+        "MAPE\n" + r"$\rho_{\mathrm{vap}}$",
+        "MAPE\n" + r"$P_{\mathrm{vap}}$",
+        "MAPE\n" + r"$\Delta H_{\mathrm{vap}}$",
     ]
     n_axis = len(col_names)
     assert data.shape[1] == n_axis
@@ -55,24 +65,21 @@ def main():
     # Create (N-1) subplots along x axis
     fig, axes = plt.subplots(1, n_axis-1, sharey=False, figsize=(20,5))
     
-    # Get min, max and range for each column
-    # Normalize the data for each column
-    #min_max_range = {}
-    #for col in cols:
-    #    min_max_range[col] = [df[col].min(), df[col].max(), np.ptp(df[col])]
-    #    #df[col] = np.true_divide(df[col] - df[col].min(), np.ptp(df[col]))
-    #    min_max_range[col] = [0, 1.0]
-    
     # Plot each row
     for i, ax in enumerate(axes):
         for line in data:
-            ax.plot(x_vals, line, alpha=0.65)
+            ax.plot(x_vals, line, alpha=0.45)
         ax.set_xlim([x_vals[i], x_vals[i+1]])
-        
+        for line in data_f:
+            ax.plot(x_vals, line, alpha=1.0, linewidth=3)
+
     for dim, ax in enumerate(axes):
         ax.xaxis.set_major_locator(ticker.FixedLocator([dim]))
-        set_ticks_for_axis(ax, param_bounds[dim], nticks=6)
-        ax.set_xticklabels([col_names[dim]], fontsize=40)
+        set_ticks_for_axis(ax, bounds[dim], nticks=6)
+        if dim < 10:
+            ax.set_xticklabels([col_names[dim]], fontsize=24)
+        else:
+            ax.set_xticklabels([col_names[dim]], fontsize=20)
         ax.set_ylim(-0.05,1.05)
         # Add white background behind labels
         for label in ax.get_yticklabels():
@@ -90,14 +97,21 @@ def main():
 
     ax = axes[-1]
     ax.xaxis.set_major_locator(ticker.FixedLocator([n_axis-2, n_axis-1]))
-    ax.set_xticklabels([col_names[-2], col_names[-1]], fontsize=40)
+    ax.set_xticklabels([col_names[-2], col_names[-1]], fontsize=20)
 
     ax = plt.twinx(axes[-1])
     ax.set_ylim(-0.05, 1.05)
-    set_ticks_for_axis(ax, param_bounds[-1], nticks=6)
+    set_ticks_for_axis(ax, bounds[-1], nticks=6)
     ax.spines['top'].set_visible(False)
     ax.spines['bottom'].set_visible(False)
     ax.spines['right'].set_linewidth(2.0)
+
+    # Add GAFF
+    ax.plot(x_vals[-1], 22.37/bounds[-1][1], markersize=12, color="gray", marker="s", clip_on=False, zorder=200)
+    ax.plot(x_vals[-2], 46.05/bounds[-2][1], markersize=12, color="gray", marker="s", clip_on=False, zorder=200)
+    ax.plot(x_vals[-3], 50.52/bounds[-3][1], markersize=12, color="gray", marker="s", clip_on=False, zorder=200)
+    ax.plot(x_vals[-4], 2.92/bounds[-4][1], markersize=12, color="gray", marker="s", clip_on=False, zorder=200)
+
 
     # Remove space between subplots
     plt.subplots_adjust(wspace=0, bottom=0.2)
@@ -116,7 +130,7 @@ def set_ticks_for_axis(ax, param_bounds, nticks):
     tick_labels = [round(min_val + step * i, 2) for i in range(nticks)]
     ticks = np.linspace(0, 1.0, nticks)
     ax.yaxis.set_ticks(ticks)
-    ax.set_yticklabels(tick_labels, fontsize=24)
+    ax.set_yticklabels(tick_labels, fontsize=16)
     ax.yaxis.set_minor_locator(ticker.AutoMinorLocator(2))
     ax.tick_params("y", direction="inout", which="both", length=7)
     ax.tick_params("y", which="major", length=14)
