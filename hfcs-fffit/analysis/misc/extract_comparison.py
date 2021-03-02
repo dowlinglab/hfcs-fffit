@@ -2,9 +2,9 @@ import signac
 import pandas as pd
 
 projects = {
-    "r32-gaff" : signac.get_project("/scratch365/bbefort/nsf-hfcs/comparison/r32-gaff-vle/"),
-    "r32-raabe" : signac.get_project("/scratch365/bbefort/nsf-hfcs/comparison/r32-raabe-vle/"),
-    "r125-gaff" : signac.get_project("/scratch365/bbefort/nsf-hfcs/comparison/r125-gaff-vle/"),
+    "r32-gaff" : signac.get_project("/scratch365/bbefort/nsf-hfcs/comparison/r32-gaff-vle-updatedTemps/"),
+    "r32-raabe" : signac.get_project("/scratch365/bbefort/nsf-hfcs/comparison/r32-raabe-vle-updatedTemps/"),
+    "r125-gaff" : signac.get_project("/scratch365/bbefort/nsf-hfcs/comparison/r125-gaff-vle-updatedTemps/"),
 }
 
 for name, project in projects.items():
