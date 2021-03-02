@@ -8,34 +8,38 @@ import seaborn
 
 sys.path.append("../")
 
-from utils.r32 import R32Constants
+from utils.r125 import R125Constants
 from radar_chart import radar_factory
 
-R32 = R32Constants()
+R125 = R125Constants()
 
 matplotlib.rc("font", family="sans-serif")
 matplotlib.rc("font", serif="Arial")
 
-csv_path = "../csv/r32-pareto.csv"
+csv_path = "../csv/r125-pareto.csv"
 df = pd.read_csv(csv_path, index_col=0)
 
 def main():
 
     # ID the top ten by lowest average MAPE
     top10 = df.loc[df.filter(regex="mape*").mean(axis=1).sort_values()[:10].index]
-    data = top10[list(R32.param_names)].values
+    data = top10[list(R125.param_names)].values
 
-    N = 6
+    N = 10
     #theta = radar_factory(N, frame='polygon')
     theta = radar_factory(N, frame='circle')
 
     spoke_labels = [
-        "$\mathregular{\sigma_C}$",
-        "$\mathregular{\sigma_F}$",
-        "$\mathregular{\sigma_H}$",
-        "$\mathregular{\epsilon_C}$",
-        "$\mathregular{\epsilon_F}$",
-        "$\mathregular{\epsilon_H}$",
+        "$\mathregular{\sigma_{C1}}$",
+        "$\mathregular{\sigma_{C2}}$",
+        "$\mathregular{\sigma_{F1}}$",
+        "$\mathregular{\sigma_{F2}}$",
+        "$\mathregular{\sigma_{H}}$",
+        "$\mathregular{\epsilon_{C1}}$",
+        "$\mathregular{\epsilon_{C2}}$",
+        "$\mathregular{\epsilon_{F1}}$",
+        "$\mathregular{\epsilon_{F2}}$",
+        "$\mathregular{\epsilon_{H}}$",
     ]
 
     fig, ax = plt.subplots(figsize=(9, 9), subplot_kw=dict(projection='radar'))
@@ -63,12 +67,12 @@ def main():
     ax.yaxis.grid(linewidth=3, alpha=0.75)
     ax.spines['polar'].set_linewidth(4)
 
-    fig.savefig("pdfs/fig4_r32-top10-radar.pdf")
+    fig.savefig("pdfs/fig_r125-top10-radar.pdf")
 
     # Plot all
-    data = df[list(R32.param_names)].values
+    data = df[list(R125.param_names)].values
 
-    N = 6
+    N = 10
     #theta = radar_factory(N, frame='polygon')
     theta = radar_factory(N, frame='circle')
 
@@ -97,7 +101,7 @@ def main():
     ax.yaxis.grid(linewidth=3, alpha=0.65)
     ax.spines['polar'].set_linewidth(4)
 
-    fig.savefig("pdfs/fig4-r32-all-radar.pdf")
+    fig.savefig("pdfs/fig_r125-all-radar.pdf")
 
 
 
