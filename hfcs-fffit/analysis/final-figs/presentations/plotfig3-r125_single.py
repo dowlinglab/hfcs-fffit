@@ -121,7 +121,7 @@ def main():
 
     ax.legend(loc="lower left", bbox_to_anchor=(-0.16, 1.0), ncol=3, fontsize=20, handletextpad=0.1, markerscale=0.8)
     fig.subplots_adjust(bottom=0.25, top=0.8, left=0.25, right=0.95)
-    fig.savefig("vle-r125_single.pdf")
+    fig.savefig("ffo_pdfs/vle-r125_single.pdf")
 
     # Plot Vapor Pressure
     fig, ax = plt.subplots(figsize=(8,6))
@@ -187,7 +187,7 @@ def main():
     ax.legend(loc="lower left", bbox_to_anchor=(-0.16, 1.05), ncol=3, fontsize=20, handletextpad=0.1, markerscale=0.8)
     ax.text(0.6, 0.8, "HFC-125", fontsize=34, transform=ax.transAxes)
     fig.subplots_adjust(bottom=0.25, top=0.8, left=0.25, right=0.95)
-    fig.savefig("pvap-r125_single.pdf")
+    fig.savefig("ffo_pdfs/pvap-r125_single.pdf")
 
 
     # Plot Enthalpy of Vaporization
@@ -252,7 +252,7 @@ def main():
     ax.legend(loc="lower left", bbox_to_anchor=(-0.16, 1.0), ncol=3, fontsize=20, handletextpad=0.1, markerscale=0.8)
     ax.text(0.6, 0.8, "HFC-125", fontsize=34, transform=ax.transAxes)
     fig.subplots_adjust(bottom=0.25, top=0.8, left=0.25, right=0.95)
-    fig.savefig("hvap-r125_single.pdf")
+    fig.savefig("ffo_pdfs/hvap-r125_single.pdf")
 
 
 def calc_critical(df):
