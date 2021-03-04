@@ -50,8 +50,9 @@ the csv files.
 Figures
 ~~~~~~~
 All scripts required to generate the primary figures in the
-manuscript are reported under ``hfcs-fffit/final-figs`` and the
-associated PDF files are located under ``hfcs-fffit/final-figs/pdfs``.
+manuscript are reported under ``hfcs-fffit/analysis/final-figs`` and the
+associated PDF files are located under
+``hfcs-fffit/analysis/final-figs/pdfs``.
 
 Using this package
 ~~~~~~~~~~~~~~~~~~
