@@ -119,8 +119,8 @@ def main():
     axs[0,0].xaxis.set_ticks_position("both")
     axs[0,0].yaxis.set_ticks_position("both")
 
-    axs[0,0].set_xlabel(r"L$_1$ norm", fontsize=12)
-    axs[0,0].set_ylabel(r"MAPE $\rho_\mathrm{liq}$", fontsize=12)
+    axs[0,0].set_xlabel(r"$L_1$ norm", fontsize=12)
+    axs[0,0].set_ylabel(r"MAPE $\rho^l_\mathrm{sat}$", fontsize=12)
 
     axs[0,1].set_xlim(-0.1,2.5)
     axs[0,1].xaxis.set_major_locator(MultipleLocator(1))
@@ -131,8 +131,8 @@ def main():
     axs[0,1].xaxis.set_ticks_position("both")
     axs[0,1].yaxis.set_ticks_position("both")
 
-    axs[0,1].set_xlabel(r"L$_1$ norm", fontsize=12)
-    axs[0,1].set_ylabel(r"MAPE $\rho_\mathrm{vap}$", fontsize=12)
+    axs[0,1].set_xlabel(r"$L_1$ norm", fontsize=12)
+    axs[0,1].set_ylabel(r"MAPE $\rho^v_\mathrm{sat}$", fontsize=12)
 
     axs[1,0].set_xlim(-0.1,2.5)
     axs[1,0].xaxis.set_major_locator(MultipleLocator(1))
@@ -143,7 +143,7 @@ def main():
     axs[1,0].xaxis.set_ticks_position("both")
     axs[1,0].yaxis.set_ticks_position("both")
 
-    axs[1,0].set_xlabel(r"L$_1$ norm", fontsize=12)
+    axs[1,0].set_xlabel(r"$L_1$ norm", fontsize=12)
     axs[1,0].set_ylabel(r"MAPE $P_\mathrm{vap}$", fontsize=12)
 
     axs[1,1].set_xlim(-0.1,2.5)
@@ -155,7 +155,7 @@ def main():
     axs[1,1].xaxis.set_ticks_position("both")
     axs[1,1].yaxis.set_ticks_position("both")
 
-    axs[1,1].set_xlabel(r"L$_1$ norm", fontsize=12)
+    axs[1,1].set_xlabel(r"$L_1$ norm", fontsize=12)
     axs[1,1].set_ylabel(r"MAPE $H_\mathrm{vap}$", fontsize=12)
 
 

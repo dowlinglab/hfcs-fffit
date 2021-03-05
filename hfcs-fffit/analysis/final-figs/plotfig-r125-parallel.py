@@ -53,8 +53,8 @@ def main():
         r"$\epsilon_{F1}$",
         r"$\epsilon_{F2}$",
         r"$\epsilon_{H}$",
-        "MAPE\n" + r"$\rho_{\mathrm{liq}}$",
-        "MAPE\n" + r"$\rho_{\mathrm{vap}}$",
+        "MAPE\n" + r"$\rho^l_{\mathrm{sat}}$",
+        "MAPE\n" + r"$\rho^v_{\mathrm{sat}}$",
         "MAPE\n" + r"$P_{\mathrm{vap}}$",
         "MAPE\n" + r"$\Delta H_{\mathrm{vap}}$",
     ]
