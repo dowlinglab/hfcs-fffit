@@ -3,8 +3,9 @@ hfcs-fffit
 
 **hfcs-fffit** is a repository used for a case study of our
 machine learning directed force field optimization workflow
-outlined in (this preprint). Here we use the procedure to generate
-force fields for two hydrofluorocarbons (HFCs), HFC-32 and HFC-125.
+outlined in `this preprint <https://arxiv.org/abs/2103.03208>`_.
+Here we use the procedure to generate force fields for two
+hydrofluorocarbons (HFCs), HFC-32 and HFC-125.
 
 Citation
 ~~~~~~~~
