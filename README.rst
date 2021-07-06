@@ -41,7 +41,7 @@ directory in ``runs``, you will find all the necessary files to
 run the simulations. Note that you may not get the exact same simulation
 results due to differences in software versions, random seeds, etc.
 Nonetheless, all of the results from our molecular simulations are saved
-under ``hfcs-fffit/analysis/rXX-YY-iterZZ-results.csv``, where ``XX``
+under ``hfcs-fffit/analysis/csv/rXX-YY-iterZZ-results.csv``, where ``XX``
 is the molecule, ``YY`` is the stage (liquid density or VLE), and
 ``ZZ`` is the iteration number.
 
@@ -80,13 +80,17 @@ Running the simulations will also require an installation of GROMACS.
 This can be installed separately (see installation instructions
 `here <https://manual.gromacs.org/documentation/2021.2/install-guide/index.html>`_ )
 
+**WARNING**: Cloning the ``hfcs-fffit`` repository will take some time
+and ~1.5 GB of disk space since it contains the latin hypercube samples
+that have ~1e6 parameter sets each.
+
 An example of the procedure is provided below:
 
 .. code-block:: bash
 
     # First clone hfcs-fffit and install pip/conda available dependencies
     # with a new conda environment named hfcs-fffit
-    git clone https://github.com/dowlinglab/hfcs-fffit
+    git clone git@github.com:dowlinglab/hfcs-fffit.git
     cd hfcs-fffit/
     conda create --name hfcs-fffit python=3.7 -c conda-forge
     conda activate hfcs-fffit
@@ -95,22 +99,95 @@ An example of the procedure is provided below:
     cd ../
 
     # Now clone and install  other dependencies
-    git clone https://github.com/dowlinglab/fffit
-    git clone https://github.com/rsdefever/block-average
+    git clone git@github.com:dowlinglab/fffit.git
     # Checkout the v0.1 release of fffit and install
     cd fffit/
     git checkout tags/v0.1
     pip install .
     cd ../
     # Checkout the v0.1 release of block average and install
-    git clone https://github.com/rsdefever/block-average
+    git clone git@github.com:rsdefever/block_average.git
     cd block_average/
+    git checkout tags/v0.1
     pip install .
     cd ../
 
 HFC-32 liquid density optimization
 ##################################
 
+**NOTE**: We use signac and signac flow (`<https://signac.io/>`_)
+to manage the setup and execution of the molecular simulations. These
+instructions assume a working knowledge of that software.
+
+The first iteration of the liquid density simulations were
+performed under the ``hfcs-fffit/runs/r32-density-iter1/``.
+A latin hypercube sample with 200 parameter sets exists under
+``hfcs-fffit/runs/r32-density-iter1/data/lh_samples_200_r32.txt``.
+The signac workspace is created by ``hfcs-fffit/runs/r32-density-iter1/init.py``.
+
+.. code-block:: bash
+
+    cd hfcs-fffit/runs/r32-density-iter1/
+    python init.py
+
+The thermodynamic conditions for the simulations and the bounds for each parameter
+(LJ sigma and epsilon for C, F, and H) are defined inside ``init.py``.
+
+The simulation workflow is
+defined in ``hfcs-fffit/runs/r32-density-iter1/project.py``. The flow operations
+defined therein create the simulation input files, perform the simulations,
+and run the analysis (calculating the average density). In order to run
+these flow operations on a cluster with a job scheduler, it will be
+necessary to edit the files under
+``hfcs-fffit/runs/r32-density-iter1/templates/`` to be compatible with
+your cluster. The signac documentation contains the necessary details.
+
+Once the first iteration of simulations have completed (i.e., all the flow
+operations are done), you can perform analysis. The necessary files are located
+under ``hfcs-fffit/runs/analysis`` and ``hfcs-fffit/runs/analysis/r32-density-iter1``.
+The first step is to extract the results from your signac project into a CSV file
+so they can be stored and accessed more easily in the future. This step is
+performed by ``extract_r32_density.py``. The script requires the iteration number
+as a command line argument.
+
+**WARNING**: Running this script will overwrite your local copy of our simulation
+results (stored as CSV files) with the results from your simulations.
+
+To extract the results for iteration 1 run the following:
+
+.. code-block:: bash
+
+    cd hfcs-fffit/analysis/
+    python extract_r32_density 1
+
+
+The CSV file with the results is saved under
+``hfcs-fffit/analysis/csv/rXX-YY-iterZZ-results.csv`` where ``XX``
+is the molecule, ``YY`` is the stage (liquid density or VLE), and
+``ZZ`` is the iteration number.
+
+The analysis is performed within a separate directory for each iteration.
+For example, for the first iteration, it is performed under
+``hfcs-fffit/analysis/r32-density-iter1``. The script ``id-new-samples.py``
+loads the results from the CSV file, fits the SVM classifier and GP surrogate
+models, loads the latin hypercube sample with 1e6 prospective parameter sets,
+and identifies the 200 new parameter sets to use for molecular simulations in
+iteration 2. These parameter sets are saved to a CSV file:
+``hfcs-fffit/analysis/csv/r32-density-iter2-params.csv``.
+
+The second iteration of the liquid density simulations were
+performed under the ``hfcs-fffit/runs/r32-density-iter2/``. The procedure
+is the same as for iteration 1, but this time the force field parameters
+are taken from: ``hfcs-fffit/analysis/csv/r32-density-iter2-params.csv``.
+The procedure for analysis is likewise analogous to iteration 1, however,
+note that in training the surrogate models,
+``hfcs-fffit/runs/analysis/r32-density-iter2/id-new-samples.py`` now uses
+the simulation results from both iterations 1 and 2.
+
+HFC-32 VLE optimization
+#######################
+
+The optimization for the vapor-liquid equilibrium case is very similar.
 
 
 
