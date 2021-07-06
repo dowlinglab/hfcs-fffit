@@ -14,13 +14,16 @@ may cite the `preprint <https://arxiv.org/abs/2103.03208>`_ as:
 
 .. code-block:: bash
 
-BJ Befort, RS DeFever, G Tow, AW Dowling, and EJ Maginn. Machine learning
-directed optimization of classical molecular modeling force fields. arXiv
-(2021), https://arxiv.org/abs/2103.03208
+    BJ Befort, RS DeFever, G Tow, AW Dowling, and EJ Maginn. Machine learning
+    directed optimization of classical molecular modeling force fields. arXiv
+    (2021), https://arxiv.org/abs/2103.03208
 
+
+Available Data
+~~~~~~~~~~~~~~
 
 HFC Parameter Sets
-~~~~~~~~~~~~~~~~~~
+##################
 The non-dominated and "top four" parameter sets for each HFC are
 provided under ``hfcs-fffit/analysis/csv/``. The non-dominated
 sets are found in ``r32-pareto.csv`` and ``r125-pareto.csv``, and
@@ -30,8 +33,8 @@ normalized between 0 and 1 based upon the parameter bounds for each
 atom type (see manuscript, or ``hfcs-fffit/analysis/utils.r32.py``
 and ``hfcs-fffit/analysis/utils.r125.py`` for definitions).
 
-Molecular Simulations
-~~~~~~~~~~~~~~~~~~~~~
+Molecular Simulations Inputs
+############################
 All molecular simulations were performed under ``hfcs-fffit/runs``.
 Each iteration was managed with ``signac-flow``. Inside of each
 directory in ``runs``, you will find all the necessary files to
@@ -42,14 +45,14 @@ under ``hfcs-fffit/analysis/rXX-YY-iterZZ-results.csv``, where ``XX``
 is the molecule, ``YY`` is the stage (liquid density or VLE), and
 ``ZZ`` is the iteration number.
 
-Surrogate modeling
-~~~~~~~~~~~~~~~~~~
+Surrogate Modeling Analysis
+############################
 All of the scripts for the surrogate modeling are provided in
 ``hfcs-fffit/analysis``, following the same naming structure as
 the csv files.
 
 Figures
-~~~~~~~
+#######
 All scripts required to generate the primary figures in the
 manuscript are reported under ``hfcs-fffit/analysis/final-figs`` and the
 associated PDF files are located under
@@ -58,10 +61,13 @@ associated PDF files are located under
 Using this package
 ~~~~~~~~~~~~~~~~~~
 
-This package has a variety of requirements that can be installed in
+Installation
+############
+
+This package has a number of requirements that can be installed in
 different ways. We recommend using a conda environment to manage
-most of the installation and dependencies, and installing some items from
-source or pip.
+most of the installation and dependencies. However, some items will
+need to be installed from source or pip.
 
 We recommend starting with a fresh conda environment, then installing
 the packages listed under ``requirements-pip.txt`` with pip, then
@@ -69,6 +75,44 @@ installing the packages listed under ``requirements-conda.txt`` with
 conda, and finally installing a few items from source
 ``requirements-other.txt``. We recommend ``python3.7`` and
 taking packages from ``conda-forge``.
+
+Running the simulations will also require an installation of GROMACS.
+This can be installed separately (see installation instructions
+`here <https://manual.gromacs.org/documentation/2021.2/install-guide/index.html>`_ )
+
+An example of the procedure is provided below:
+
+.. code-block:: bash
+
+    # First clone hfcs-fffit and install pip/conda available dependencies
+    # with a new conda environment named hfcs-fffit
+    git clone https://github.com/dowlinglab/hfcs-fffit
+    cd hfcs-fffit/
+    conda create --name hfcs-fffit python=3.7 -c conda-forge
+    conda activate hfcs-fffit
+    python3 -m pip install -r requirements-pip.txt
+    conda install --file requirements-conda.txt -c conda-forge
+    cd ../
+
+    # Now clone and install  other dependencies
+    git clone https://github.com/dowlinglab/fffit
+    git clone https://github.com/rsdefever/block-average
+    # Checkout the v0.1 release of fffit and install
+    cd fffit/
+    git checkout tags/v0.1
+    pip install .
+    cd ../
+    # Checkout the v0.1 release of block average and install
+    git clone https://github.com/rsdefever/block-average
+    cd block_average/
+    pip install .
+    cd ../
+
+HFC-32 liquid density optimization
+##################################
+
+
+
 
 Credits
 ~~~~~~~
