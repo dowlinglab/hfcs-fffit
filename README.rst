@@ -81,7 +81,7 @@ This can be installed separately (see installation instructions
 `here <https://manual.gromacs.org/documentation/2021.2/install-guide/index.html>`_ )
 
 **WARNING**: Cloning the ``hfcs-fffit`` repository will take some time
-and ~1.5 GB of disk space since it contains the latin hypercube samples
+and ~1.5 GB of disk space since it contains the Latin hypercube
 that have ~1e6 parameter sets each.
 
 An example of the procedure is provided below:
@@ -121,7 +121,7 @@ instructions assume a working knowledge of that software.
 
 The first iteration of the liquid density simulations were
 performed under the ``hfcs-fffit/runs/r32-density-iter1/``.
-A latin hypercube sample with 200 parameter sets exists under
+A Latin hypercube with 200 parameter sets exists under
 ``hfcs-fffit/runs/r32-density-iter1/data/lh_samples_200_r32.txt``.
 The signac workspace is created by ``hfcs-fffit/runs/r32-density-iter1/init.py``.
 
@@ -170,7 +170,7 @@ The analysis is performed within a separate directory for each iteration.
 For example, for the first iteration, it is performed under
 ``hfcs-fffit/analysis/r32-density-iter1``. The script ``id-new-samples.py``
 loads the results from the CSV file, fits the SVM classifier and GP surrogate
-models, loads the latin hypercube sample with 1e6 prospective parameter sets,
+models, loads the Latin hypercube with 1e6 prospective parameter sets,
 and identifies the 200 new parameter sets to use for molecular simulations in
 iteration 2. These parameter sets are saved to a CSV file:
 ``hfcs-fffit/analysis/csv/r32-density-iter2-params.csv``.
@@ -187,9 +187,27 @@ the simulation results from both iterations 1 and 2.
 HFC-32 VLE optimization
 #######################
 
-The optimization for the vapor-liquid equilibrium case is very similar.
+The optimization for the vapor-liquid equilibrium iterations is very similar.
+The final (iteration 4) liquid density analysis saves the parameters as
+``hfcs-fffit/analysis/csv/r32-vle-iter1-params.csv``. The first VLE iteration
+begins with these parameters. Once again, the simulations are performed under:
+``hfcs-fffit/runs/r32-vle-iter1``. The ``init.py`` is used to set up the
+signac workspace, and ``project.py`` defines the simulation workflow
+(create the inputs, perform the molecular simulations, and run the analysis).
+The results are extracted into the CSV file with
+``hfcs-fffit/analysis/extract_r32_vle.py``. Once again the iteration number
+is a command line argument, and the results are saved to a CSV file
+``hfcs-fffit/analysis/csv/r32-vle-iter1-results.csv``.
 
-
+Each VLE iteration has a folder with the analysis
+scripts (e.g., ``hfcs-fffit/analysis/r32-vle-iter1``). The ``analysis.py``
+and ``evaluate-gps.py`` perform basic analysis and create figures evaluating
+the performance of the GP models. The ``id-new-samples.py`` loads a Latin
+Hypercube with 1e6 prospective parameter sets, and identifies the top-performing
+parameter sets which will be evaluated with molecular simulations during the
+subsequent iteration. For example, the parameter sets to be used for the second
+VLE iteration are saved to ``hfcs-fffit/analysis/csv/r32-vle-iter2-params.csv``.
+Each subsequent VLE iteration is performed in the same manner.
 
 Credits
 ~~~~~~~
