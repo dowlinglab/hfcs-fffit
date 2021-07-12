@@ -30,8 +30,9 @@ sets are found in ``r32-pareto.csv`` and ``r125-pareto.csv``, and
 the "top four" sets are found in ``r32-final-4.csv`` and
 ``r125-final-4.csv``. The parameter values in the csv files are
 normalized between 0 and 1 based upon the parameter bounds for each
-atom type (see manuscript, or ``hfcs-fffit/analysis/utils.r32.py``
-and ``hfcs-fffit/analysis/utils.r125.py`` for definitions).
+atom type (see manuscript, or ``hfcs-fffit/analysis/utils/r32.py``
+and ``hfcs-fffit/analysis/utils/r125.py`` for definitions of
+the upper and lower parameter bounds).
 
 Molecular Simulations Inputs
 ############################
