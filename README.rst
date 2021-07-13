@@ -79,7 +79,7 @@ taking packages from ``conda-forge``.
 
 Running the simulations will also require an installation of GROMACS.
 This can be installed separately (see installation instructions
-`here <https://manual.gromacs.org/documentation/2021.2/install-guide/index.html>`_ )
+`here <https://manual.gromacs.org/documentation/2021.2/install-guide/index.html>`_).
 
 **WARNING**: Cloning the ``hfcs-fffit`` repository will take some time
 and ~1.5 GB of disk space since it contains the Latin hypercube
