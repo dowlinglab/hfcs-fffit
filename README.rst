@@ -59,7 +59,7 @@ manuscript are reported under ``hfcs-fffit/analysis/final-figs`` and the
 associated PDF files are located under
 ``hfcs-fffit/analysis/final-figs/pdfs``.
 
-Using this package
+Using This Package
 ~~~~~~~~~~~~~~~~~~
 
 Installation
@@ -113,7 +113,7 @@ An example of the procedure is provided below:
     pip install .
     cd ../
 
-HFC-32 liquid density optimization
+HFC-32 Liquid Density Optimization
 ##################################
 
 **NOTE**: We use signac and signac flow (`<https://signac.io/>`_)
@@ -185,7 +185,7 @@ note that in training the surrogate models,
 ``hfcs-fffit/runs/analysis/r32-density-iter2/id-new-samples.py`` now uses
 the simulation results from both iterations 1 and 2.
 
-HFC-32 VLE optimization
+HFC-32 VLE Optimization
 #######################
 
 The optimization for the vapor-liquid equilibrium iterations is very similar.
@@ -204,7 +204,7 @@ Each VLE iteration has a folder with the analysis
 scripts (e.g., ``hfcs-fffit/analysis/r32-vle-iter1``). The ``analysis.py``
 and ``evaluate-gps.py`` perform basic analysis and create figures evaluating
 the performance of the GP models. The ``id-new-samples.py`` loads a Latin
-Hypercube with 1e6 prospective parameter sets, and identifies the top-performing
+hypercube with 1e6 prospective parameter sets, and identifies the top-performing
 parameter sets which will be evaluated with molecular simulations during the
 subsequent iteration. For example, the parameter sets to be used for the second
 VLE iteration are saved to ``hfcs-fffit/analysis/csv/r32-vle-iter2-params.csv``.
