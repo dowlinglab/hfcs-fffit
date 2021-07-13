@@ -14,7 +14,7 @@ may cite the `preprint <https://arxiv.org/abs/2103.03208>`_ as:
 
 .. code-block:: bash
 
-    BJ Befort, RS DeFever, G Tow, AW Dowling, and EJ Maginn. Machine learning
+    BJ Befort, RS DeFever, GM Tow, AW Dowling, and EJ Maginn. Machine learning
     directed optimization of classical molecular modeling force fields. arXiv
     (2021), https://arxiv.org/abs/2103.03208
 
@@ -159,7 +159,7 @@ To extract the results for iteration 1 run the following:
 .. code-block:: bash
 
     cd hfcs-fffit/analysis/
-    python extract_r32_density 1
+    python extract_r32_density.py 1
 
 
 The CSV file with the results is saved under
