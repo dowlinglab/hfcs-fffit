@@ -112,6 +112,17 @@ def main():
     ax.plot(x_vals[-3], 50.52/bounds[-3][1], markersize=12, color="gray", marker="s", clip_on=False, zorder=200)
     ax.plot(x_vals[-4], 2.92/bounds[-4][1], markersize=12, color="gray", marker="s", clip_on=False, zorder=200)
 
+    ax.plot(x_vals[0], (3.40 - bounds[0][0])/(bounds[0][1] - bounds[0][0]), markersize=12, color="gray", marker="s", clip_on=False, zorder=200)
+    ax.plot(x_vals[1], (3.40 - bounds[1][0])/(bounds[1][1] - bounds[1][0]), markersize=12, color="gray", marker="s", clip_on=False, zorder=200)
+    ax.plot(x_vals[2], (3.12 - bounds[2][0])/(bounds[2][1] - bounds[2][0]), markersize=12, color="gray", marker="s", clip_on=False, zorder=200)
+    ax.plot(x_vals[3], (3.12 - bounds[3][0])/(bounds[3][1] - bounds[3][0]), markersize=12, color="gray", marker="s", clip_on=False, zorder=200)
+    ax.plot(x_vals[4], (2.29 - bounds[4][0])/(bounds[4][1] - bounds[4][0]), markersize=12, color="gray", marker="s", clip_on=False, zorder=200)
+    ax.plot(x_vals[5], (55.1 - bounds[5][0])/(bounds[5][1] - bounds[5][0]), markersize=12, color="gray", marker="s", clip_on=False, zorder=200)
+    ax.plot(x_vals[6], (55.1 - bounds[6][0])/(bounds[6][1] - bounds[6][0]), markersize=12, color="gray", marker="s", clip_on=False, zorder=200)
+    ax.plot(x_vals[7], (30.7 - bounds[7][0])/(bounds[7][1] - bounds[7][0]), markersize=12, color="gray", marker="s", clip_on=False, zorder=200)
+    ax.plot(x_vals[8], (30.7 - bounds[8][0])/(bounds[8][1] - bounds[8][0]), markersize=12, color="gray", marker="s", clip_on=False, zorder=200)
+    ax.plot(x_vals[9], (7.9  - bounds[9][0])/(bounds[9][1] - bounds[9][0]), markersize=12,  color="gray", marker="s", clip_on=False, zorder=200)
+
 
     # Remove space between subplots
     plt.subplots_adjust(wspace=0, bottom=0.2)

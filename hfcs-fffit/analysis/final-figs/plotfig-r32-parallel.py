@@ -107,10 +107,25 @@ def main():
     ax.plot(x_vals[-3], 7.171/bounds[-3][1], markersize=16, color="#0989d9", marker="^", clip_on=False, zorder=200)
     ax.plot(x_vals[-4], 1.448/bounds[-4][1], markersize=16, color="#0989d9", marker="^", clip_on=False, zorder=200)
 
+    ax.plot(x_vals[0], (3.15 - bounds[0][0])/(bounds[0][1] - bounds[0][0]), markersize=16, color="#0989d9", marker="^", clip_on=False, zorder=200)
+    ax.plot(x_vals[1], (2.94 - bounds[1][0])/(bounds[1][1] - bounds[1][0]), markersize=16, color="#0989d9", marker="^", clip_on=False, zorder=200)
+    ax.plot(x_vals[2], (2.23 - bounds[2][0])/(bounds[2][1] - bounds[2][0]), markersize=16, color="#0989d9", marker="^", clip_on=False, zorder=200)
+    ax.plot(x_vals[3], (54.6 - bounds[3][0])/(bounds[3][1] - bounds[3][0]), markersize=16, color="#0989d9", marker="^", clip_on=False, zorder=200)
+    ax.plot(x_vals[4], (44.0 - bounds[4][0])/(bounds[4][1] - bounds[4][0]), markersize=16, color="#0989d9", marker="^", clip_on=False, zorder=200)
+    ax.plot(x_vals[5], (7.9  - bounds[5][0])/(bounds[5][1] - bounds[5][0]), markersize=16, color="#0989d9", marker="^", clip_on=False, zorder=200)
+    
     # Add GAFF
     ax.plot(x_vals[-1], 22.216/bounds[-1][1], markersize=12, color="gray", marker="s", clip_on=False, zorder=200, label="GAFF")
     ax.plot(x_vals[-4], 16.92/bounds[-4][1], markersize=12, color="gray", marker="s", clip_on=False, zorder=200)
 
+    ax.plot(x_vals[0], (3.40 - bounds[0][0])/(bounds[0][1] - bounds[0][0]), markersize=12, color="gray", marker="s", clip_on=False, zorder=200)
+    ax.plot(x_vals[1], (3.12 - bounds[1][0])/(bounds[1][1] - bounds[1][0]), markersize=12, color="gray", marker="s", clip_on=False, zorder=200)
+    ax.plot(x_vals[2], (2.29 - bounds[2][0])/(bounds[2][1] - bounds[2][0]), markersize=12, color="gray", marker="s", clip_on=False, zorder=200)
+    ax.plot(x_vals[3], (55.1 - bounds[3][0])/(bounds[3][1] - bounds[3][0]), markersize=12, color="gray", marker="s", clip_on=False, zorder=200)
+    ax.plot(x_vals[4], (30.7 - bounds[4][0])/(bounds[4][1] - bounds[4][0]), markersize=12, color="gray", marker="s", clip_on=False, zorder=200)
+    ax.plot(x_vals[5], (7.9  - bounds[5][0])/(bounds[5][1] - bounds[5][0]), markersize=12,  color="gray", marker="s", clip_on=False, zorder=200)
+
+ 
     # Remove space between subplots
     plt.subplots_adjust(wspace=0, bottom=0.2, left=0.05, right=0.93)
     
