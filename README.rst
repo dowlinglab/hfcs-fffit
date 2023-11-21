@@ -209,6 +209,27 @@ subsequent iteration. For example, the parameter sets to be used for the second
 VLE iteration are saved to ``hfcs-fffit/analysis/csv/r32-vle-iter2-params.csv``.
 Each subsequent VLE iteration is performed in the same manner.
 
+Known Issues
+############
+
+The instructions outlined above seem to be system dependent. In some cases, 
+users have the following error: 
+
+
+.. code-block:: bash
+    ImportError: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.29' not found
+
+If you observe this, please try the following in the terminal
+
+.. code-block:: bash
+    export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
+
+which should fix the problem. This is not an optimal solution and is something we
+would like to address. We found that related projects [(`1 <https://github.com/openmm/openmm/issues/3943>`_)][(`2 <https://github.com/conda/conda/issues/12410>`_)] have similar issues.
+If you are aware a robust solution to this issue, please let us know by raising
+an issue or sending an email!
+
+
 Credits
 ~~~~~~~
 
