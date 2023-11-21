@@ -217,11 +217,13 @@ users have the following error:
 
 
 .. code-block:: bash
+
     ImportError: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.29' not found
 
 If you observe this, please try the following in the terminal
 
 .. code-block:: bash
+
     export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
 
 which should fix the problem. This is not an optimal solution and is something we
