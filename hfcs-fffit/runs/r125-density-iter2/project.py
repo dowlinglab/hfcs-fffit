@@ -66,7 +66,7 @@ def fix_topology(job):
 
     top_contents[
         defaults_line + 2
-    ] = "1               2               no              0.5       0.8333333\n"
+    ] = "1               2               yes             0.5       0.8333333\n"
 
     with open(job.fn("system.top"), "w") as fout:
         for line in top_contents:
