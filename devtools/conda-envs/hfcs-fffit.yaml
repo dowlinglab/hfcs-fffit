@@ -19,6 +19,7 @@ dependencies:
   - mbuild
   - mosdef_cassandra >=0.4.0
   - gmso >=0.11.2
+  - ipython
 
   - pip:
     - gpflow
