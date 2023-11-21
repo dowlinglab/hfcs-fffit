@@ -321,7 +321,7 @@ def run_gemc(job):
         # Run production
         mc.restart(
             system=system,
-            moves=moves,
+            moveset=moves,
             run_type="production",
             run_length=job.sp.nsteps_prod,
             temperature=job.sp.T * u.K,
