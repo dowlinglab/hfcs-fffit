@@ -10,8 +10,8 @@ class Project(FlowProject):
     pass
 
 
-@Project.operation
 @Project.post.isfile("ff.xml")
+@Project.operation
 def create_forcefield(job):
     """Create the forcefield .xml file for the job"""
 
@@ -21,8 +21,8 @@ def create_forcefield(job):
         ff.write(content)
 
 
-@Project.operation
 @Project.post(lambda job: "vapboxl" in job.doc)
+@Project.operation
 def calc_vapboxl(job):
     "Calculate the initial box length of the vapor box"
 
@@ -40,8 +40,8 @@ def calc_vapboxl(job):
     job.doc.vapboxl = boxl  # nm, compatible with mbuild
 
 
-@Project.operation
 @Project.post(lambda job: "liqboxl" in job.doc)
+@Project.operation
 def calc_liqboxl(job):
     "Calculate the initial box length of the liquid box"
 
@@ -77,10 +77,9 @@ def liqbox_equilibrated(job):
     return completed
 
 
-@Project.operation
 @Project.pre.after(create_forcefield, calc_liqboxl, calc_vapboxl)
 @Project.post(liqbox_equilibrated)
-@directives(omp_num_threads=2)
+@Project.operation(directives={"omp_num_threads": 2})
 def equilibrate_liqbox(job):
     "Equilibrate the liquid box"
 
@@ -89,6 +88,7 @@ def equilibrate_liqbox(job):
     import mbuild
     import foyer
     import mosdef_cassandra as mc
+    import unyt as u
 
     ff = foyer.Forcefield(job.fn("ff.xml"))
 
@@ -108,7 +108,7 @@ def equilibrate_liqbox(job):
     system = mc.System(box_list, species_list, mols_to_add=mols_to_add)
 
     # Create a new moves object
-    moves = mc.Moves("npt", species_list)
+    moves = mc.MoveSet("npt", species_list)
 
     # Edit the volume move probability to be more reasonable
     orig_prob_volume = moves.prob_volume
@@ -132,8 +132,8 @@ def equilibrate_liqbox(job):
     custom_args = {
         "run_name": "equil",
         "charge_style": "ewald",
-        "rcut_min": 1.0,
-        "vdw_cutoff": 12.0,
+        "rcut_min": 1.0 * u.angstrom,
+        "vdw_cutoff": 12.0 * u.angstrom,
         "units": "sweeps",
         "steps_per_sweep": job.sp.N_liq,
         "coord_freq": 500,
@@ -153,19 +153,19 @@ def equilibrate_liqbox(job):
         # Run equilibration
         mc.run(
             system=system,
-            moves=moves,
+            moveset=moves,
             run_type="equilibration",
             run_length=job.sp.nsteps_liqeq,
-            temperature=job.sp.T,
-            pressure=job.sp.P,
+            temperature=job.sp.T * u.K,
+            pressure=job.sp.P * u.bar,
             **custom_args
         )
 
 
-@Project.operation
 @Project.pre.after(equilibrate_liqbox)
 @Project.post.isfile("liqbox.xyz")
 @Project.post(lambda job: "liqbox_final_dim" in job.doc)
+@Project.operation
 def extract_final_liqbox(job):
     "Extract final coords and box dims from the liquid box simulation"
 
@@ -224,10 +224,9 @@ def gemc_prod_complete(job):
     return completed
 
 
-@Project.operation
 @Project.pre.after(extract_final_liqbox)
 @Project.post(gemc_prod_complete)
-@directives(omp_num_threads=2)
+@Project.operation(directives={"omp_num_threads": 2})
 def run_gemc(job):
     "Run gemc"
 
@@ -262,7 +261,7 @@ def run_gemc(job):
     )
 
     # Create a new moves object
-    moves = mc.Moves("gemc", species_list)
+    moves = mc.MoveSet("gemc", species_list)
 
     # Edit the volume and swap move probability to be more reasonable
     orig_prob_volume = moves.prob_volume
@@ -293,10 +292,10 @@ def run_gemc(job):
     custom_args = {
         "run_name": "equil",
         "charge_style": "ewald",
-        "rcut_min": 1.0,
-        "charge_cutoff_box2": 25.0,
-        "vdw_cutoff_box1": 12.0,
-        "vdw_cutoff_box2": 25.0,
+        "rcut_min": 1.0 * u.angstrom,
+        "charge_cutoff_box2": 25.0 * u.angstrom,
+        "vdw_cutoff_box1": 12.0 * u.angstrom,
+        "vdw_cutoff_box2": 25.0 * u.angstrom,
         "units": "sweeps",
         "steps_per_sweep": job.sp.N_liq + job.sp.N_vap,
         "coord_freq": 500,
@@ -309,10 +308,10 @@ def run_gemc(job):
         # Run equilibration
         mc.run(
             system=system,
-            moves=moves,
+            moveset=moves,
             run_type="equilibration",
             run_length=job.sp.nsteps_eq,
-            temperature=job.sp.T,
+            temperature=job.sp.T * u.K,
             **custom_args
         )
 
@@ -323,15 +322,14 @@ def run_gemc(job):
         # Run production
         mc.restart(
             system=system,
-            moves=moves,
+            moveset=moves,
             run_type="production",
             run_length=job.sp.nsteps_prod,
-            temperature=job.sp.T,
+            temperature=job.sp.T * u.K,
             **custom_args
         )
 
 
-@Project.operation
 @Project.pre.after(run_gemc)
 @Project.post(lambda job: "liq_density" in job.doc)
 @Project.post(lambda job: "vap_density" in job.doc)
@@ -347,6 +345,7 @@ def run_gemc(job):
 @Project.post(lambda job: "Hvap_unc" in job.doc)
 @Project.post(lambda job: "liq_enthalpy_unc" in job.doc)
 @Project.post(lambda job: "vap_enthalpy_unc" in job.doc)
+@Project.operation
 def calculate_props(job):
     """Calculate the density"""
 

@@ -11,7 +11,7 @@ from utils.r32 import R32Constants
 def init_project():
 
     # Initialize project
-    project = signac.init_project("r32-vle-iter1")
+    project = signac.init_project()
 
     # Define temps
     temps = [241.0 * u.K, 261.0 * u.K, 281.0 * u.K, 301.0 * u.K, 321.0 * u.K]
