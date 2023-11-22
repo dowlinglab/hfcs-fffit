@@ -70,12 +70,8 @@ different ways. We recommend using a conda environment to manage
 most of the installation and dependencies. However, some items will
 need to be installed from source or pip.
 
-We recommend starting with a fresh conda environment, then installing
-the packages listed under ``requirements-pip.txt`` with pip, then
-installing the packages listed under ``requirements-conda.txt`` with
-conda, and finally installing a few items from source
-``requirements-other.txt``. We recommend ``python3.7`` and
-taking packages from ``conda-forge``.
+We recommend installing the required dependencies using the
+conda environment file located in ``devtools/conda-envs/hfcs-fffit.yaml``.
 
 Running the simulations will also require an installation of GROMACS.
 This can be installed separately (see installation instructions
@@ -90,23 +86,26 @@ An example of the procedure is provided below:
 .. code-block:: bash
 
     # First clone hfcs-fffit and install pip/conda available dependencies
-    # with a new conda environment named hfcs-fffit
+    # from the conda environment file included in devtools/conda-envs/ 
+
     git clone git@github.com:dowlinglab/hfcs-fffit.git
-    cd hfcs-fffit/
-    conda create --name hfcs-fffit python=3.7 -c conda-forge
+    cd hfcs-fffit
+    conda env create -f ./devtools/conda-envs/hfcs-fffit.yaml
     conda activate hfcs-fffit
-    python3 -m pip install -r requirements-pip.txt
-    conda install --file requirements-conda.txt -c conda-forge
     cd ../
 
-    # Now clone and install  other dependencies
+    # Now clone and install other dependencies
     git clone git@github.com:dowlinglab/fffit.git
+
     # Checkout the v0.1 release of fffit and install
+
     cd fffit/
     git checkout tags/v0.1
     pip install .
     cd ../
+
     # Checkout the v0.1 release of block average and install
+
     git clone git@github.com:rsdefever/block_average.git
     cd block_average/
     git checkout tags/v0.1
@@ -209,6 +208,29 @@ parameter sets which will be evaluated with molecular simulations during the
 subsequent iteration. For example, the parameter sets to be used for the second
 VLE iteration are saved to ``hfcs-fffit/analysis/csv/r32-vle-iter2-params.csv``.
 Each subsequent VLE iteration is performed in the same manner.
+
+Known Issues
+############
+
+The instructions outlined above seem to be system dependent. In some cases, 
+users have the following error: 
+
+
+.. code-block:: bash
+
+    ImportError: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.29' not found
+
+If you observe this, please try the following in the terminal
+
+.. code-block:: bash
+
+    export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
+
+which should fix the problem. This is not an optimal solution and is something we
+would like to address. We found that related projects (`1 <https://github.com/openmm/openmm/issues/3943>`_)(`2 <https://github.com/conda/conda/issues/12410>`_) have similar issues.
+If you are aware a robust solution to this issue, please let us know by raising
+an issue or sending an email!
+
 
 Credits
 ~~~~~~~

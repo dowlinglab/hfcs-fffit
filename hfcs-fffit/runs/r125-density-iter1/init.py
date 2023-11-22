@@ -7,7 +7,7 @@ from fffit.utils import values_scaled_to_real
 
 def init_project():
 
-    project = signac.init_project("r125-density-iter1")
+    project = signac.init_project()
 
     # Define temps
     temps = [

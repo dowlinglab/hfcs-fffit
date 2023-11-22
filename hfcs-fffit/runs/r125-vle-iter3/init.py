@@ -11,7 +11,7 @@ from utils.r125 import R125Constants
 def init_project():
 
     # Initialize project
-    project = signac.init_project("r125-vle-iter3")
+    project = signac.init_project()
 
     # Define temps
     temps = [

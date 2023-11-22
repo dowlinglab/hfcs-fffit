@@ -11,7 +11,7 @@ from utils.r32 import R32Constants
 def init_project():
 
     # Initialize project
-    project = signac.init_project("r32-vle-iter3")
+    project = signac.init_project()
 
     # Define temps
     temps = [241.0 * u.K, 261.0 * u.K, 281.0 * u.K, 301.0 * u.K, 321.0 * u.K]
@@ -31,7 +31,7 @@ def init_project():
     # Experimental density
     R32 = R32Constants()
 
-    # Load samples
+    # Load samples from Latin hypercube
     lh_samples = np.genfromtxt(
         "../../analysis/csv/r32-vle-iter3-params.csv",
         delimiter=",",
