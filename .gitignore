@@ -21,3 +21,4 @@ submit.sge
 *.ipynb_checkpoints
 *.egg-info*
 *DS_Store
+*.signac/
